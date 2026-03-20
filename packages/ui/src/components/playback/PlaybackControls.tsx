@@ -2,7 +2,12 @@ import styles from './Playback.module.scss';
 
 import {useCallback, useRef} from 'preact/hooks';
 import {useApplication} from '../../contexts';
-import {useDocumentEvent, usePlayerState, useCurrentScene, useScenes} from '../../hooks';
+import {
+  useCurrentScene,
+  useDocumentEvent,
+  usePlayerState,
+  useScenes,
+} from '../../hooks';
 import {IconButton, IconCheckbox, Input, Select, Slider} from '../controls';
 import {
   FastForward,
@@ -28,7 +33,8 @@ export function PlaybackControls() {
   if (player.allScenes.length > allScenesRef.current.length) {
     allScenesRef.current = player.allScenes;
   }
-  const allScenes = allScenesRef.current.length > 0 ? allScenesRef.current : scenes;
+  const allScenes =
+    allScenesRef.current.length > 0 ? allScenesRef.current : scenes;
 
   useDocumentEvent(
     'keydown',

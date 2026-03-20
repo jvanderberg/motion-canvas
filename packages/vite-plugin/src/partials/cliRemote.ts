@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import type {ServerResponse} from 'http';
 import * as path from 'path';
 import {Plugin, WebSocketServer} from 'vite';
 
@@ -15,7 +16,19 @@ interface LogEntry {
   stack?: string;
 }
 
-const MAX_SERVER_LOGS = 50;
+const MaxServerLogs = 50;
+
+function json(res: ServerResponse, status: number, body: unknown) {
+  res.setHeader('Content-Type', 'application/json');
+  res.writeHead(status);
+  res.end(JSON.stringify(body));
+}
+
+function png(res: ServerResponse, buffer: Buffer) {
+  res.setHeader('Content-Type', 'image/png');
+  res.writeHead(200);
+  res.end(buffer);
+}
 
 export function cliRemotePlugin(): Plugin {
   const pending = new Map<string, PendingRequest>();
@@ -58,7 +71,7 @@ export function cliRemotePlugin(): Plugin {
 
   function pushServerLog(level: string, message: string, stack?: string) {
     serverLogs.push({level, message, stack});
-    if (serverLogs.length > MAX_SERVER_LOGS) serverLogs.shift();
+    if (serverLogs.length > MaxServerLogs) serverLogs.shift();
   }
 
   return {
@@ -66,8 +79,9 @@ export function cliRemotePlugin(): Plugin {
 
     configureServer(server) {
       // Intercept Vite's WebSocket error events (compilation/transform errors)
-      // Intercept Vite's WebSocket error events (compilation/transform errors)
-      const origSend = server.ws.send.bind(server.ws) as Function;
+      const origSend = server.ws.send.bind(server.ws) as (
+        ...args: any[]
+      ) => any;
       server.ws.send = function (first: any, second?: any) {
         // Vite sends errors as ws.send({ type: 'error', err: {...} })
         if (typeof first === 'object' && first?.type === 'error') {
@@ -113,17 +127,12 @@ export function cliRemotePlugin(): Plugin {
                 fs.mkdirSync(dir, {recursive: true});
               }
               fs.writeFileSync(output, buffer);
-              res.writeHead(200, {'Content-Type': 'application/json'});
-              res.end(
-                JSON.stringify({ok: true, path: output, size: buffer.length}),
-              );
+              json(res, 200, {ok: true, path: output, size: buffer.length});
             } else {
-              res.writeHead(200, {'Content-Type': 'image/png'});
-              res.end(buffer);
+              png(res, buffer);
             }
           } catch (e: any) {
-            res.writeHead(500, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({error: e.message}));
+            json(res, 500, {error: e.message});
           }
           return;
         }
@@ -137,11 +146,9 @@ export function cliRemotePlugin(): Plugin {
               {format},
               600000,
             );
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ok: true, result: result.result}));
+            json(res, 200, {ok: true, result: result.result});
           } catch (e: any) {
-            res.writeHead(500, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({error: e.message}));
+            json(res, 500, {error: e.message});
           }
           return;
         }
@@ -153,17 +160,13 @@ export function cliRemotePlugin(): Plugin {
               {},
               5000,
             );
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(
-              JSON.stringify({
-                ready: result.ready,
-                frame: result.frame,
-                duration: result.duration,
-              }),
-            );
+            json(res, 200, {
+              ready: result.ready,
+              frame: result.frame,
+              duration: result.duration,
+            });
           } catch (e: any) {
-            res.writeHead(500, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({error: e.message}));
+            json(res, 500, {error: e.message});
           }
           return;
         }
@@ -188,8 +191,7 @@ export function cliRemotePlugin(): Plugin {
           const allLogs = [...serverLogs, ...browserLogs];
           if (clear) serverLogs.length = 0;
 
-          res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end(JSON.stringify(allLogs));
+          json(res, 200, allLogs);
           return;
         }
 

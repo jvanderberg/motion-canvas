@@ -35,7 +35,7 @@ export function editor(project: Project) {
   projectNameSignal.value = project.name;
 
   const recentLogs: {level: string; message: string; stack?: string}[] = [];
-  const MAX_LOGS = 100;
+  const maxLogs = 100;
 
   project.logger.onLogged.subscribe(log => {
     const {level, message, stack, object, durationMs, ...rest} = log;
@@ -45,7 +45,7 @@ export function editor(project: Project) {
       fn(stack);
     }
     recentLogs.push({level, message, stack});
-    if (recentLogs.length > MAX_LOGS) recentLogs.shift();
+    if (recentLogs.length > maxLogs) recentLogs.shift();
   });
 
   if (!project.experimentalFeatures) {
