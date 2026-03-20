@@ -4,8 +4,12 @@ import clsx from 'clsx';
 import {RefObject} from 'preact';
 import {useCallback, useEffect, useState} from 'preact/hooks';
 import {useApplication, useTimelineContext} from '../../contexts';
-import {useModifiers} from '../../contexts/shortcuts';
-import {useDuration, usePreviewSettings, useSharedSettings} from '../../hooks';
+import {
+  useDuration,
+  useKeyHold,
+  usePreviewSettings,
+  useSharedSettings,
+} from '../../hooks';
 import {labelClipDraggingLeftSignal} from '../../signals';
 import {MouseButton} from '../../utils';
 import {DragIndicator} from '../icons';
@@ -25,7 +29,8 @@ export function RangeSelector({rangeRef}: RangeSelectorProps) {
   const endFrame = Math.min(player.status.secondsToFrames(range[1]), duration);
   const [start, setStart] = useState(startFrame);
   const [end, setEnd] = useState(endFrame);
-  const modifiers = useModifiers();
+  const shiftHeld = useKeyHold('Shift');
+  const controlHeld = useKeyHold('Control');
 
   const onDrop = useCallback(() => {
     labelClipDraggingLeftSignal.value = null;
@@ -48,7 +53,7 @@ export function RangeSelector({rangeRef}: RangeSelectorProps) {
     <div
       className={clsx(
         styles.rangeTrack,
-        modifiers.value.shift && modifiers.value.ctrl && styles.active,
+        shiftHeld && controlHeld && styles.active,
       )}
       onPointerDown={event => {
         if (event.button === MouseButton.Left) {
@@ -83,7 +88,7 @@ export function RangeSelector({rangeRef}: RangeSelectorProps) {
         }}
         className={clsx(
           styles.range,
-          modifiers.value.shift && !modifiers.value.ctrl && styles.active,
+          shiftHeld && !controlHeld && styles.active,
         )}
         onPointerDown={event => {
           if (event.button === MouseButton.Left) {

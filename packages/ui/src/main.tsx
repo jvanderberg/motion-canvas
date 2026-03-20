@@ -11,11 +11,8 @@ import {
 import {ComponentChild, render} from 'preact';
 import {Editor} from './Editor';
 import {ProjectData, ProjectSelection} from './ProjectSelection';
-import {
-  ApplicationProvider,
-  PanelsProvider,
-  ShortcutsProvider,
-} from './contexts';
+import {ApplicationProvider, PanelsProvider} from './contexts';
+import {ShortcutsProvider} from './contexts/shortcuts';
 import GridPlugin from './plugin/GridPlugin';
 import {projectNameSignal} from './signals';
 import {getItem, setItem} from './utils';
@@ -25,8 +22,6 @@ const ExperimentalHooks = [
   'provider',
   'previewOverlay',
   'presenterOverlay',
-  'inspectors',
-  'shortcuts',
 ] as const;
 
 function renderRoot(vnode: ComponentChild) {
@@ -39,6 +34,9 @@ export function editor(project: Project) {
   Error.stackTraceLimit = Infinity;
   projectNameSignal.value = project.name;
 
+  const recentLogs: {level: string; message: string; stack?: string}[] = [];
+  const MAX_LOGS = 100;
+
   project.logger.onLogged.subscribe(log => {
     const {level, message, stack, object, durationMs, ...rest} = log;
     const fn = console[level as 'error'] ?? console.log;
@@ -46,6 +44,8 @@ export function editor(project: Project) {
     if (stack) {
       fn(stack);
     }
+    recentLogs.push({level, message, stack});
+    if (recentLogs.length > MAX_LOGS) recentLogs.shift();
   });
 
   if (!project.experimentalFeatures) {
@@ -146,11 +146,13 @@ export function editor(project: Project) {
   meta.shared.onChanged.subscribe(updatePlayer);
   meta.preview.onChanged.subscribe(updatePlayer);
 
-  // CLI remote control — allows external tools to capture frames and trigger renders
-  if (import.meta.hot) {
+  // CLI remote control — uses optional chaining so the code survives
+  // production library builds where import.meta.hot is stripped.
+  const hot = import.meta.hot;
+  if (hot) {
     const cliStage = new Stage();
 
-    import.meta.hot.on(
+    hot.on(
       'motion-canvas:cli-capture',
       async ({frame, id}: {frame: number; id: string}) => {
         try {
@@ -167,12 +169,12 @@ export function editor(project: Project) {
             player.playback.currentScene,
             player.playback.previousScene,
           );
-          import.meta.hot!.send('motion-canvas:cli-capture-result', {
+          hot.send('motion-canvas:cli-capture-result', {
             id,
             data: cliStage.finalBuffer.toDataURL('image/png'),
           });
         } catch (e: any) {
-          import.meta.hot!.send('motion-canvas:cli-capture-result', {
+          hot.send('motion-canvas:cli-capture-result', {
             id,
             error: e.message ?? String(e),
           });
@@ -180,7 +182,7 @@ export function editor(project: Project) {
       },
     );
 
-    import.meta.hot.on(
+    hot.on(
       'motion-canvas:cli-render',
       async ({id, format}: {id: string; format: string}) => {
         try {
@@ -196,14 +198,14 @@ export function editor(project: Project) {
           }
           const unsub = renderer.onFinished.subscribe(result => {
             unsub();
-            import.meta.hot!.send('motion-canvas:cli-render-result', {
+            hot.send('motion-canvas:cli-render-result', {
               id,
               result,
             });
           });
           renderer.render({...settings, name: project.name});
         } catch (e: any) {
-          import.meta.hot!.send('motion-canvas:cli-render-result', {
+          hot.send('motion-canvas:cli-render-result', {
             id,
             error: e.message ?? String(e),
           });
@@ -211,14 +213,25 @@ export function editor(project: Project) {
       },
     );
 
-    import.meta.hot.on('motion-canvas:cli-status', ({id}: {id: string}) => {
-      import.meta.hot!.send('motion-canvas:cli-status-result', {
+    hot.on('motion-canvas:cli-status', ({id}: {id: string}) => {
+      hot.send('motion-canvas:cli-status-result', {
         id,
         duration: player.playback.duration,
         frame: player.playback.frame,
         ready: true,
       });
     });
+
+    hot.on(
+      'motion-canvas:cli-logs',
+      ({id, clear}: {id: string; clear?: boolean}) => {
+        hot.send('motion-canvas:cli-logs-result', {
+          id,
+          logs: [...recentLogs],
+        });
+        if (clear) recentLogs.length = 0;
+      },
+    );
   }
 
   document.title = `${project.name} | Motion Canvas`;

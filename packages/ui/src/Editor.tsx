@@ -1,5 +1,4 @@
 import {PresenterState} from '@motion-canvas/core';
-import {useEffect} from 'preact/hooks';
 import styles from './Editor.module.scss';
 import {Console} from './components/console';
 import {Footer} from './components/footer';
@@ -9,18 +8,12 @@ import {Settings, Threads, VideoSettings} from './components/sidebar';
 import {Timeline} from './components/timeline';
 import {Viewport} from './components/viewport';
 import {usePanels} from './contexts';
-import {useShortcutContext} from './contexts/shortcuts';
 import {usePresenterState} from './hooks';
 import {EditorPanel} from './signals';
 
 export function Editor() {
   const state = usePresenterState();
   const {sidebar, bottom} = usePanels();
-  const {global} = useShortcutContext();
-
-  useEffect(() => {
-    global.value = state === PresenterState.Initial ? 'editor' : 'presenter';
-  }, [state]);
 
   return state === PresenterState.Initial ? (
     <div className={styles.root}>

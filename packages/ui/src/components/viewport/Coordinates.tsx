@@ -1,11 +1,12 @@
 import {isInspectable, Vector2} from '@motion-canvas/core';
+import {useCallback} from 'preact/hooks';
 import {useEffect, useState} from 'react';
+import {useViewportContext} from '../../contexts';
 import {
-  useShortcut,
-  useViewportContext,
-  VIEWPORT_SHORTCUTS,
-} from '../../contexts';
-import {useCurrentScene, useViewportMatrix} from '../../hooks';
+  useCurrentScene,
+  useDocumentEvent,
+  useViewportMatrix,
+} from '../../hooks';
 import {ReadOnlyInput} from '../controls';
 import styles from './Viewport.module.scss';
 
@@ -39,10 +40,18 @@ export function Coordinates() {
   }, [state, matrix]);
 
   // Below method is used for the copy to clipboard keybind
-  useShortcut(VIEWPORT_SHORTCUTS, 'copyCoordinates', async () => {
-    const positionString = `${mousePos.x}, ${mousePos.y}`;
-    await window.navigator.clipboard.writeText(positionString);
-  });
+  useDocumentEvent(
+    'keydown',
+    useCallback(
+      async event => {
+        if (document.activeElement.tagName !== 'INPUT' && event.key === 'p') {
+          const positionString = `${mousePos.x}, ${mousePos.y}`;
+          await window.navigator.clipboard.writeText(positionString);
+        }
+      },
+      [mousePos],
+    ),
+  );
 
   return (
     <ReadOnlyInput className={styles.coordinates} title={'Coordinates'}>

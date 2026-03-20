@@ -15,17 +15,9 @@ export interface TimelineState {
    */
   firstVisibleFrame: number;
   /**
-   * First time in seconds covered by the infinite scroll.
-   */
-  firstVisibleTime: number;
-  /**
    * Last frame covered by the infinite scroll.
    */
   lastVisibleFrame: number;
-  /**
-   * Last time in seconds covered by the infinite scroll.
-   */
-  lastVisibleTime: number;
   /**
    * Frames per pixel rounded to the closest power of two.
    */
@@ -39,33 +31,17 @@ export interface TimelineState {
    */
   framesToPercents: (value: number) => number;
   /**
-   * Convert seconds to percents.
-   */
-  secondsToPercents: (value: number) => number;
-  /**
    * Convert frames to pixels.
    */
   framesToPixels: (value: number) => number;
-  /**
-   * Convert seconds to pixels.
-   */
-  secondsToPixels: (value: number) => number;
   /**
    * Convert pixels to frames.
    */
   pixelsToFrames: (value: number) => number;
   /**
-   * Convert pixels to seconds.
-   */
-  pixelsToSeconds: (value: number) => number;
-  /**
    * Convert current pointer position to frames.
    */
   pointerToFrames: (value: number) => number;
-  /**
-   * Convert current pointer position to seconds.
-   */
-  pointerToSeconds: (value: number) => number;
 }
 
 const TimelineContext = createContext<TimelineState>({
@@ -74,17 +50,11 @@ const TimelineContext = createContext<TimelineState>({
   density: 1,
   segmentDensity: 1,
   lastVisibleFrame: 0,
-  lastVisibleTime: 0,
   firstVisibleFrame: 0,
-  firstVisibleTime: 0,
   framesToPercents: value => value,
-  secondsToPercents: value => value,
   framesToPixels: value => value,
-  secondsToPixels: value => value,
   pixelsToFrames: value => value,
-  pixelsToSeconds: value => value,
   pointerToFrames: value => value,
-  pointerToSeconds: value => value,
 });
 
 export function TimelineContextProvider({

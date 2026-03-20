@@ -12,6 +12,11 @@ export default defineConfig({
       '@motion-canvas/2d/editor': '@motion-canvas/2d/src/editor',
     },
   },
+  define: {
+    // Preserve import.meta.hot in the library build so CLI remote control
+    // code is not tree-shaken. The consuming Vite dev server provides it.
+    'import.meta.hot': 'import.meta.hot',
+  },
   build: {
     lib: {
       entry: 'src/main.tsx',

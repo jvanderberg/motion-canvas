@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import {ComponentChildren} from 'preact';
-import {useMemo, useRef} from 'preact/hooks';
+import {useCallback, useMemo, useRef} from 'preact/hooks';
 import {ViewportProvider, ViewportState, useApplication} from '../../contexts';
-import {VIEWPORT_SHORTCUTS, useShortcuts} from '../../contexts/shortcuts';
 import {
+  useDocumentEvent,
+  useDrag,
   usePreviewSettings,
   useSharedSettings,
   useSize,
@@ -32,7 +33,6 @@ export function EditorPreview() {
   );
   const containerRef = useRef<HTMLDivElement>();
   const overlayRef = useRef<HTMLDivElement>();
-  const isDragging = useRef(false);
   const size = useSize(containerRef);
   const settings = {
     ...useSharedSettings(),
@@ -78,24 +78,63 @@ export function EditorPreview() {
     return state;
   }, [grid, zoomToFit, zoom, position, settings, size]);
 
+  const [handleDrag, isDragging] = useDrag(
+    useCallback(
+      (x, y) => {
+        setZoomToFit(false);
+        setZoom(state.zoom);
+        setPosition({
+          x: state.x + x,
+          y: state.y + y,
+        });
+      },
+      [state],
+    ),
+    undefined,
+    null,
+  );
+
   useSubscribable(
     player.onRecalculated,
     () => overlayRef.current.animate(highlight(), {duration: 300}),
     [],
   );
 
-  useShortcuts(VIEWPORT_SHORTCUTS, {
-    zoomFit: () => setZoomToFit(true),
-    zoomIn: () => {
-      setZoomToFit(false);
-      setZoom(state.zoom * (1 + ZOOM_SPEED));
-    },
-    zoomOut: () => {
-      setZoomToFit(false);
-      setZoom(state.zoom * (1 - ZOOM_SPEED));
-    },
-    toggleGrid: () => setGrid(!grid),
-  });
+  useDocumentEvent(
+    'keydown',
+    useCallback(
+      event => {
+        if (document.activeElement.tagName === 'INPUT') {
+          return;
+        }
+        switch (event.key) {
+          case '0': {
+            setZoomToFit(true);
+            break;
+          }
+          case '=':
+            setZoomToFit(false);
+            setZoom(state.zoom * (1 + ZOOM_SPEED));
+            break;
+          case '-':
+            setZoomToFit(false);
+            setZoom(state.zoom * (1 - ZOOM_SPEED));
+            break;
+          case "'":
+            setGrid(!grid);
+            break;
+          case 'ArrowUp':
+            // TODO Support hierarchy traversal.
+            break;
+          case 'ArrowDown': {
+            // TODO Support hierarchy traversal.
+            break;
+          }
+        }
+      },
+      [state.zoom, grid],
+    ),
+  );
 
   const zoomOptions = [
     {value: 0, text: 'Zoom to fit'},
@@ -142,33 +181,16 @@ export function EditorPreview() {
           onContextMenu={event => {
             event.preventDefault();
           }}
-          onPointerDown={event => {
+          onMouseDown={event => {
             if (
               event.button === MouseButton.Middle ||
               (event.button === MouseButton.Left && event.shiftKey)
             ) {
-              isDragging.current = true;
-              event.preventDefault();
-              event.stopPropagation();
-              event.currentTarget.setPointerCapture(event.pointerId);
+              handleDrag(event);
             }
-          }}
-          onPointerMove={event => {
-            if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-              setZoomToFit(false);
-              setZoom(state.zoom);
-              setPosition({
-                x: state.x + event.movementX,
-                y: state.y + event.movementY,
-              });
-            }
-          }}
-          onPointerUp={event => {
-            isDragging.current = false;
-            event.currentTarget.releasePointerCapture(event.pointerId);
           }}
           onWheel={event => {
-            if (isDragging.current) return;
+            if (isDragging) return;
             const rect = containerRef.current.getBoundingClientRect();
             const pointer = {
               x: event.x - rect.x - rect.width / 2,

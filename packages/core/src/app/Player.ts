@@ -87,6 +87,7 @@ export class Player {
   private readonly recalculated = new EventDispatcher<void>();
 
   public readonly playback: PlaybackManager;
+  public readonly allScenes: Scene[] = [];
   public readonly status: PlaybackStatus;
   public readonly audio: AudioManager;
   public readonly audioPool: AudioManagerPool;
@@ -177,6 +178,7 @@ export class Player {
       scene.variables.updateSignals(project.variables ?? {});
       scenes.push(scene);
     }
+    this.allScenes.push(...scenes);
     this.playback.setup(scenes);
     this.activate();
   }
@@ -359,6 +361,15 @@ export class Player {
       cancelAnimationFrame(this.requestId);
       this.requestId = null;
     }
+  }
+
+  /**
+   * Switch to a different set of scenes.
+   */
+  public setScenes(scenes: Scene[]) {
+    this.playback.setup(scenes);
+    this.requestRecalculation();
+    this.requestedSeek = 0;
   }
 
   private requestRecalculation() {

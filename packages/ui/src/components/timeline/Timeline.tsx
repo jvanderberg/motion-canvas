@@ -4,16 +4,13 @@ import {useSignal, useSignalEffect} from '@preact/signals';
 import clsx from 'clsx';
 import {useLayoutEffect, useMemo, useRef} from 'preact/hooks';
 import {
-  TIMELINE_SHORTCUTS,
   TimelineContextProvider,
   TimelineState,
   useApplication,
-  useShortcuts,
-  useSurfaceShortcuts,
 } from '../../contexts';
 import {
+  useDocumentEvent,
   useDuration,
-  usePlayerTime,
   usePreviewSettings,
   useReducedMotion,
   useSharedSettings,
@@ -21,6 +18,7 @@ import {
   useStateChange,
   useStorage,
 } from '../../hooks';
+import {useShortcut} from '../../hooks/useShortcut';
 import {labelClipDraggingLeftSignal} from '../../signals';
 import {MouseButton, MouseMask, clamp} from '../../utils';
 import {borderHighlight} from '../animations';
@@ -34,11 +32,10 @@ import {Timestamps} from './Timestamps';
 const ZOOM_SPEED = 0.1;
 const ZOOM_MIN = 0.5;
 const TIMESTAMP_SPACING = 32;
-const VIRTUAL_SCROLL_SPACING = 256;
 const MAX_FRAME_SIZE = 128;
 
 export function Timeline() {
-  const shortcutRef = useSurfaceShortcuts<HTMLDivElement>(TIMELINE_SHORTCUTS);
+  const [hoverRef] = useShortcut<HTMLDivElement>('timeline');
   const {player, meta} = useApplication();
   const {range} = useSharedSettings();
   const containerRef = useRef<HTMLDivElement>();
@@ -53,8 +50,6 @@ export function Timeline() {
   const seeking = useSignal<number | null>(null);
   const warnedAboutRange = useRef(false);
   const isReady = duration > 0;
-
-  const {durationTime} = usePlayerTime();
 
   useLayoutEffect(() => {
     containerRef.current.scrollLeft = offset;
@@ -76,16 +71,11 @@ export function Timeline() {
     () => ({
       framesToPixels: (value: number) =>
         (value / duration) * sizes.playableLength,
-      secondsToPixels: (value: number) =>
-        (value / durationTime) * sizes.playableLength,
       framesToPercents: (value: number) => (value / duration) * 100,
-      secondsToPercents: (value: number) => (value / durationTime) * 100,
       pixelsToFrames: (value: number) =>
         (value / sizes.playableLength) * duration,
-      pixelsToSeconds: (value: number) =>
-        (value / sizes.playableLength) * durationTime,
     }),
-    [duration, durationTime, sizes],
+    [duration, sizes],
   );
 
   const state = useMemo<TimelineState>(() => {
@@ -94,36 +84,27 @@ export function Timeline() {
       Math.round(Math.log2(duration / sizes.playableLength)),
     );
     const segmentDensity = Math.floor(TIMESTAMP_SPACING * density);
-    const virtualScrollDensity = Math.max(
-      1,
-      Math.floor(VIRTUAL_SCROLL_SPACING * density),
-    );
+    const clampedSegmentDensity = Math.max(1, segmentDensity);
     const relativeOffset = offset - sizes.paddingLeft;
     const firstVisibleFrame =
       Math.floor(
-        conversion.pixelsToFrames(relativeOffset) / virtualScrollDensity,
-      ) * virtualScrollDensity;
-    const firstVisibleTime = player.status.framesToSeconds(firstVisibleFrame);
+        conversion.pixelsToFrames(relativeOffset) / clampedSegmentDensity,
+      ) * clampedSegmentDensity;
     const lastVisibleFrame =
       Math.ceil(
         conversion.pixelsToFrames(
           relativeOffset + sizes.viewLength + TIMESTAMP_SPACING,
-        ) / virtualScrollDensity,
-      ) * virtualScrollDensity;
-    const lastVisibleTime = player.status.framesToSeconds(lastVisibleFrame);
+        ) / clampedSegmentDensity,
+      ) * clampedSegmentDensity;
     const startPosition = sizes.paddingLeft + rect.x - offset;
 
     return {
       viewLength: sizes.viewLength,
       offset: relativeOffset,
-      firstVisibleTime,
       firstVisibleFrame,
-      lastVisibleTime,
       lastVisibleFrame,
       density,
       segmentDensity,
-      pointerToSeconds: (value: number) =>
-        conversion.pixelsToSeconds(value - startPosition),
       pointerToFrames: (value: number) =>
         conversion.pixelsToFrames(value - startPosition),
       ...conversion,
@@ -147,24 +128,32 @@ export function Timeline() {
     [duration / fps, rect.width],
   );
 
-  useShortcuts(TIMELINE_SHORTCUTS, {
-    focusPlayhead: () => {
-      const maxOffset = sizes.fullLength - sizes.viewLength;
-      const scrollLeft = state.secondsToPixels(player.status.time);
-      const newOffset = clamp(0, maxOffset, scrollLeft);
-      containerRef.current.scrollLeft = newOffset;
-      setOffset(newOffset);
-    },
-    moveRangeStart: () => {
-      const frame = player.onFrameChanged.current;
-      const end = player.status.secondsToFrames(range[1]);
-      meta.shared.range.update(frame, end, duration, fps);
-    },
-    moveRangeEnd: () => {
-      const frame = player.onFrameChanged.current;
-      const start = player.status.secondsToFrames(range[0]);
-      meta.shared.range.update(start, frame, duration, fps);
-    },
+  useDocumentEvent('keydown', event => {
+    if (document.activeElement.tagName === 'INPUT') {
+      return;
+    }
+
+    const frame = player.onFrameChanged.current;
+    switch (event.key) {
+      case 'f': {
+        const maxOffset = sizes.fullLength - sizes.viewLength;
+        const scrollLeft = state.framesToPixels(frame);
+        const newOffset = clamp(0, maxOffset, scrollLeft);
+        containerRef.current.scrollLeft = newOffset;
+        setOffset(newOffset);
+        break;
+      }
+      case 'b': {
+        const end = player.status.secondsToFrames(range[1]);
+        meta.shared.range.update(frame, end, duration, fps);
+        break;
+      }
+      case 'n': {
+        const start = player.status.secondsToFrames(range[0]);
+        meta.shared.range.update(start, frame, duration, fps);
+        break;
+      }
+    }
   });
 
   useLayoutEffect(() => {
@@ -175,7 +164,8 @@ export function Timeline() {
     const offset = labelClipDraggingLeftSignal.value;
     if (offset !== null && playheadRef.current) {
       playheadRef.current.style.left = `${
-        state.secondsToPixels(offset) + sizes.paddingLeft
+        state.framesToPixels(player.status.secondsToFrames(offset)) +
+        sizes.paddingLeft
       }px`;
     }
   });
@@ -204,10 +194,7 @@ export function Timeline() {
 
   return (
     <TimelineContextProvider state={state}>
-      <div
-        ref={shortcutRef}
-        className={clsx(styles.root, isReady && styles.show)}
-      >
+      <div ref={hoverRef} className={clsx(styles.root, isReady && styles.show)}>
         <div
           className={styles.timelineWrapper}
           ref={containerRef}

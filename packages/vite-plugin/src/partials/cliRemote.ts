@@ -9,8 +9,17 @@ interface PendingRequest {
   timer: ReturnType<typeof setTimeout>;
 }
 
+interface LogEntry {
+  level: string;
+  message: string;
+  stack?: string;
+}
+
+const MAX_SERVER_LOGS = 50;
+
 export function cliRemotePlugin(): Plugin {
   const pending = new Map<string, PendingRequest>();
+  const serverLogs: LogEntry[] = [];
   let ws: WebSocketServer | null = null;
 
   function sendAndWait(
@@ -47,15 +56,40 @@ export function cliRemotePlugin(): Plugin {
     };
   }
 
+  function pushServerLog(level: string, message: string, stack?: string) {
+    serverLogs.push({level, message, stack});
+    if (serverLogs.length > MAX_SERVER_LOGS) serverLogs.shift();
+  }
+
   return {
     name: 'motion-canvas:cli-remote',
 
     configureServer(server) {
+      // Intercept Vite's WebSocket error events (compilation/transform errors)
+      // Intercept Vite's WebSocket error events (compilation/transform errors)
+      const origSend = server.ws.send.bind(server.ws) as Function;
+      server.ws.send = function (first: any, second?: any) {
+        // Vite sends errors as ws.send({ type: 'error', err: {...} })
+        if (typeof first === 'object' && first?.type === 'error') {
+          const err = first.err;
+          if (err) {
+            pushServerLog(
+              'error',
+              err.message || String(err),
+              err.stack || err.frame,
+            );
+          }
+        }
+        return second !== undefined
+          ? (origSend as any)(first, second)
+          : (origSend as any)(first);
+      };
       ws = server.ws;
 
       server.ws.on('motion-canvas:cli-capture-result', handleResult());
       server.ws.on('motion-canvas:cli-render-result', handleResult());
       server.ws.on('motion-canvas:cli-status-result', handleResult());
+      server.ws.on('motion-canvas:cli-logs-result', handleResult());
 
       server.middlewares.use(async (req, res, next) => {
         const url = new URL(req.url!, `http://${req.headers.host}`);
@@ -131,6 +165,31 @@ export function cliRemotePlugin(): Plugin {
             res.writeHead(500, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({error: e.message}));
           }
+          return;
+        }
+
+        if (url.pathname === '/__logs') {
+          const clear = url.searchParams.get('clear') === 'true';
+
+          // Collect browser-side logs (may timeout if browser is disconnected)
+          let browserLogs: LogEntry[] = [];
+          try {
+            const result = await sendAndWait(
+              'motion-canvas:cli-logs',
+              {clear},
+              5000,
+            );
+            browserLogs = result.logs ?? [];
+          } catch {
+            // Browser unreachable — server logs are still useful
+          }
+
+          // Merge server-side logs (Vite compilation errors) with browser logs
+          const allLogs = [...serverLogs, ...browserLogs];
+          if (clear) serverLogs.length = 0;
+
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify(allLogs));
           return;
         }
 

@@ -1,6 +1,6 @@
-import {useRef} from 'preact/hooks';
+import {useCallback, useRef} from 'preact/hooks';
 import {useState} from 'react';
-import {VIEWPORT_SHORTCUTS, useShortcut} from '../../contexts/shortcuts';
+import {useDocumentEvent} from '../../hooks';
 import {ButtonCheckbox} from '../controls/ButtonCheckbox';
 import {Colorize} from '../icons';
 
@@ -11,7 +11,7 @@ export function ColorPicker() {
 function ColorPickerImpl() {
   const [active, setActive] = useState(false);
   const isActive = useRef(active);
-  const pickColor = async () => {
+  const pickColor = useCallback(async () => {
     if (isActive.current) return;
 
     try {
@@ -26,9 +26,19 @@ function ColorPickerImpl() {
 
     isActive.current = false;
     setActive(false);
-  };
+  }, []);
 
-  useShortcut(VIEWPORT_SHORTCUTS, 'colorPicker', pickColor);
+  useDocumentEvent(
+    'keydown',
+    useCallback(
+      event => {
+        if (document.activeElement.tagName !== 'INPUT' && event.key === 'i') {
+          pickColor();
+        }
+      },
+      [pickColor],
+    ),
+  );
 
   return (
     <ButtonCheckbox
