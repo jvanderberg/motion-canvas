@@ -44,6 +44,9 @@ export function PlaybackControls() {
           {value: 1, text: 'x1'},
           {value: 1.5, text: 'x1.5'},
           {value: 2, text: 'x2'},
+          {value: 3, text: 'x3'},
+          {value: 3.5, text: 'x3.5'},
+          {value: 4, text: 'x4'},
         ]}
         value={state.speed}
         onChange={speed => player.setSpeed(speed)}
