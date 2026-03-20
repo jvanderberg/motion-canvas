@@ -1,4 +1,5 @@
 export * from './assets';
+export * from './cliRemote';
 export * from './corsProxy';
 export * from './editor';
 export * from './exporter';

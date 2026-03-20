@@ -3,6 +3,7 @@ import type {Plugin} from 'vite';
 import {
   CorsProxyPluginConfig,
   assetsPlugin,
+  cliRemotePlugin,
   corsProxyPlugin,
   editorPlugin,
   exporterPlugin,
@@ -136,5 +137,6 @@ export default ({
     assetsPlugin({bufferedAssets}),
     webglPlugin(),
     corsProxyPlugin(proxy),
+    cliRemotePlugin(),
   ];
 };

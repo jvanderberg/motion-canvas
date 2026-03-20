@@ -4,6 +4,7 @@ import {
   Player,
   Presenter,
   Renderer,
+  Stage,
   experimentalLog,
   type Project,
 } from '@motion-canvas/core';
@@ -144,6 +145,81 @@ export function editor(project: Project) {
   };
   meta.shared.onChanged.subscribe(updatePlayer);
   meta.preview.onChanged.subscribe(updatePlayer);
+
+  // CLI remote control — allows external tools to capture frames and trigger renders
+  if (import.meta.hot) {
+    const cliStage = new Stage();
+
+    import.meta.hot.on(
+      'motion-canvas:cli-capture',
+      async ({frame, id}: {frame: number; id: string}) => {
+        try {
+          const settings = meta.getFullPreviewSettings();
+          cliStage.configure(settings);
+          player.requestSeek(frame);
+          await new Promise<void>(resolve => {
+            const unsub = player.onRender.subscribe(async () => {
+              unsub();
+              resolve();
+            });
+          });
+          await cliStage.render(
+            player.playback.currentScene,
+            player.playback.previousScene,
+          );
+          import.meta.hot!.send('motion-canvas:cli-capture-result', {
+            id,
+            data: cliStage.finalBuffer.toDataURL('image/png'),
+          });
+        } catch (e: any) {
+          import.meta.hot!.send('motion-canvas:cli-capture-result', {
+            id,
+            error: e.message ?? String(e),
+          });
+        }
+      },
+    );
+
+    import.meta.hot.on(
+      'motion-canvas:cli-render',
+      async ({id, format}: {id: string; format: string}) => {
+        try {
+          const settings = meta.getFullRenderingSettings();
+          if (format === 'mp4') {
+            settings.exporter = {
+              name: '@motion-canvas/ffmpeg',
+              options: settings.exporter.options ?? {
+                fastStart: true,
+                includeAudio: true,
+              },
+            };
+          }
+          const unsub = renderer.onFinished.subscribe(result => {
+            unsub();
+            import.meta.hot!.send('motion-canvas:cli-render-result', {
+              id,
+              result,
+            });
+          });
+          renderer.render({...settings, name: project.name});
+        } catch (e: any) {
+          import.meta.hot!.send('motion-canvas:cli-render-result', {
+            id,
+            error: e.message ?? String(e),
+          });
+        }
+      },
+    );
+
+    import.meta.hot.on('motion-canvas:cli-status', ({id}: {id: string}) => {
+      import.meta.hot!.send('motion-canvas:cli-status-result', {
+        id,
+        duration: player.playback.duration,
+        frame: player.playback.frame,
+        ready: true,
+      });
+    });
+  }
 
   document.title = `${project.name} | Motion Canvas`;
 
