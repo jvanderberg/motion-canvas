@@ -1,3 +1,6 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import type {Readable} from 'node:stream';
 import type {
   RendererResult,
   RendererSettings,
@@ -7,9 +10,6 @@ import type {PluginConfig} from '@motion-canvas/vite-plugin';
 import {ffmpegPath, ffprobePath} from 'ffmpeg-ffprobe-static';
 import type {AudioVideoFilter, FilterSpecification} from 'fluent-ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
-import * as fs from 'fs';
-import * as path from 'path';
-import {Readable} from 'stream';
 import {ImageStream} from './ImageStream';
 
 ffmpeg.setFfmpegPath(ffmpegPath!);

@@ -1,5 +1,5 @@
-import {FlagDispatcher, Subscribable} from '../events';
-import {Promisable} from '../threading';
+import {FlagDispatcher, type Subscribable} from '../events';
+import type {Promisable} from '../threading';
 import {DetailedError} from '../utils';
 
 export interface PromiseHandle<T> {
@@ -31,7 +31,7 @@ export class DependencyContext<TOwner = void>
       stack: new Error().stack,
     };
 
-    const context = this.collectionStack.at(-1);
+    const context = DependencyContext.collectionStack.at(-1);
     if (context) {
       handle.owner = context.owner;
     }
@@ -40,18 +40,20 @@ export class DependencyContext<TOwner = void>
       context?.markDirty();
     });
 
-    this.promises.push(handle);
+    DependencyContext.promises.push(handle);
     return handle;
   }
 
   public static hasPromises() {
-    return this.promises.length > 0;
+    return DependencyContext.promises.length > 0;
   }
 
   public static async consumePromises() {
-    const promises = [...this.promises];
+    const promises = [...DependencyContext.promises];
     await Promise.all(promises.map(handle => handle.promise));
-    this.promises = this.promises.filter(v => !promises.includes(v));
+    DependencyContext.promises = DependencyContext.promises.filter(
+      v => !promises.includes(v),
+    );
     return promises;
   }
 
@@ -98,7 +100,9 @@ export class DependencyContext<TOwner = void>
   }
 
   protected clearDependencies() {
-    this.dependencies.forEach(dep => dep.unsubscribe(this.markDirty));
+    this.dependencies.forEach(dep => {
+      dep.unsubscribe(this.markDirty);
+    });
     this.dependencies.clear();
   }
 

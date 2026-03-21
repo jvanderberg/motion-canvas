@@ -1,6 +1,10 @@
 import clsx from 'clsx';
 import {useMemo, useRef} from 'preact/hooks';
-import {ViewportProvider, ViewportState, useApplication} from '../../contexts';
+import {
+  useApplication,
+  ViewportProvider,
+  type ViewportState,
+} from '../../contexts';
 import {useRenderingSettings, useSharedSettings, useSize} from '../../hooks';
 import {StageView} from '../viewport';
 import {OverlayCanvas} from '../viewport/OverlayCanvas';
@@ -37,7 +41,7 @@ export function PresentationMode() {
       if (physicalSize.width * newZoom > size.width) {
         newZoom = size.width / physicalSize.width;
       }
-      if (!isNaN(newZoom) && newZoom > 0 && newZoom < Infinity) {
+      if (!Number.isNaN(newZoom) && newZoom > 0 && newZoom < Infinity) {
         state.zoom = newZoom;
       }
     }

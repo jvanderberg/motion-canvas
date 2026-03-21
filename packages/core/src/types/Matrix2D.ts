@@ -1,6 +1,6 @@
 import {DEG2RAD} from '../utils';
-import {EPSILON, Type, WebGLConvertible} from './Type';
-import {PossibleVector2, Vector2} from './Vector';
+import {EPSILON, type Type, type WebGLConvertible} from './Type';
+import {type PossibleVector2, Vector2} from './Vector';
 
 export type PossibleMatrix2D =
   | Matrix2D
@@ -229,19 +229,20 @@ export class Matrix2D implements Type, WebGLConvertible {
     ty: number,
   );
   public constructor(
-    a?: PossibleMatrix2D | PossibleVector2,
-    b?: PossibleVector2,
-    c?: PossibleVector2,
-    d?: number,
-    tx?: number,
-    ty?: number,
+    ...args:
+      | []
+      | [PossibleMatrix2D | PossibleVector2]
+      | [PossibleVector2, PossibleVector2, PossibleVector2]
+      | [number, number, number, number, number, number]
   ) {
-    if (arguments.length === 0) {
+    if (args.length === 0) {
       this.values = new Float32Array([1, 0, 0, 1, 0, 0]);
       return;
     }
 
-    if (arguments.length === 6) {
+    const [a, b, c, d, tx, ty] = args as [any, any, any, any, any, any];
+
+    if (args.length === 6) {
       this.values[0] = a as number;
       this.values[1] = b as number;
       this.values[2] = c as number;

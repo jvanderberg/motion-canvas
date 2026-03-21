@@ -3,10 +3,10 @@ import {
   Grid,
   Layout,
   Line,
+  makeScene2D,
   Node,
   Rect,
   Txt,
-  makeScene2D,
 } from '@motion-canvas/2d';
 import {
   all,

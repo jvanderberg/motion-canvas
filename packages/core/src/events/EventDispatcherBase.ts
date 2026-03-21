@@ -1,6 +1,4 @@
-export interface EventHandler<T> {
-  (value: T): any;
-}
+export type EventHandler<T> = (value: T) => any;
 
 /**
  * A base for dispatching {@link Subscribable}s.

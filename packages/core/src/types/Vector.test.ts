@@ -1,6 +1,6 @@
 import {describe, expect, test} from 'vitest';
 import {createSignal} from '../signals';
-import {PossibleVector2, Vector2} from '../types';
+import {type PossibleVector2, Vector2} from '../types';
 
 describe('Vector2', () => {
   test('Correctly parses values', () => {
@@ -50,15 +50,12 @@ describe('Vector2', () => {
     [[-1, -1], -135],
     [[0, -1], -90],
     [[1, -1], -45],
-  ])(
-    'Computes angle of vector with positive x-axis in degrees: (%s, %s)',
-    (points, expected) => {
-      const vector = new Vector2(points[0], points[1]);
+  ])('Computes angle of vector with positive x-axis in degrees: (%s, %s)', (points, expected) => {
+    const vector = new Vector2(points[0], points[1]);
 
-      expect(vector.degrees).toBe(expected);
-      expect(Vector2.degrees(points[0], points[1])).toBe(expected);
-    },
-  );
+    expect(vector.degrees).toBe(expected);
+    expect(Vector2.degrees(points[0], points[1])).toBe(expected);
+  });
 
   describe('equality', () => {
     test('equal if all components are exactly equal', () => {
@@ -108,15 +105,12 @@ describe('Vector2', () => {
     [[0, 1], 1],
     [[2, 1], 5],
     [[-1, 3], 10],
-  ])(
-    'Computes the squared magnitude of the vector: (%s, %s)',
-    (points, expected) => {
-      const vector = new Vector2(points[0], points[1]);
+  ])('Computes the squared magnitude of the vector: (%s, %s)', (points, expected) => {
+    const vector = new Vector2(points[0], points[1]);
 
-      expect(vector.squaredMagnitude).toBe(expected);
-      expect(Vector2.squaredMagnitude(points[0], points[1])).toBe(expected);
-    },
-  );
+    expect(vector.squaredMagnitude).toBe(expected);
+    expect(Vector2.squaredMagnitude(points[0], points[1])).toBe(expected);
+  });
 
   test.each([
     [0, [1, 0]],
@@ -161,12 +155,9 @@ describe('Vector2', () => {
     [[0, 1], -90, [-1, 1]],
     [[0, -1], 90, [-1, -1]],
     [[0, -1], -90, [1, -1]],
-  ])(
-    'Rotates a vector around an arbitrary point: (%s, %s°)',
-    (center, angle, expected) => {
-      const vector = Vector2.zero;
-      const result = vector.rotate(angle, center as PossibleVector2);
-      expect(result).toEqual(new Vector2(expected as PossibleVector2));
-    },
-  );
+  ])('Rotates a vector around an arbitrary point: (%s, %s°)', (center, angle, expected) => {
+    const vector = Vector2.zero;
+    const result = vector.rotate(angle, center as PossibleVector2);
+    expect(result).toEqual(new Vector2(expected as PossibleVector2));
+  });
 });

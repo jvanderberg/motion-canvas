@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {SourceNode} from 'source-map';
-import {normalizePath, Plugin, ResolvedConfig} from 'vite';
+import {normalizePath, type Plugin, type ResolvedConfig} from 'vite';
 
 declare module 'source-map' {
   interface SourceNode {

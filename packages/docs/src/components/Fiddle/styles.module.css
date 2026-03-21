@@ -6,11 +6,6 @@
   margin-bottom: var(--ifm-leading);
 }
 
-.root:focus-within .layoutControl,
-.root:hover .layoutControl {
-  opacity: 1;
-}
-
 .layoutControl {
   z-index: 1;
   transition: opacity 200ms ease-in-out;
@@ -20,6 +15,29 @@
   position: absolute;
   right: calc(var(--ifm-pre-padding) / 2);
   top: calc(var(--ifm-pre-padding) / 2);
+}
+
+.root:focus-within .layoutControl,
+.root:hover .layoutControl {
+  opacity: 1;
+}
+
+.icon {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--ifm-font-color-base);
+  transition: background var(--ifm-transition-fast);
+}
+
+.icon:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
 }
 
 .layoutControl .icon {
@@ -74,24 +92,6 @@
   justify-content: end;
 }
 
-.icon {
-  cursor: pointer;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: var(--ifm-font-color-base);
-  transition: background var(--ifm-transition-fast);
-}
-
-.icon:hover {
-  background-color: var(--ifm-color-emphasis-200);
-  color: var(--ifm-font-color-base);
-}
-
 .root button {
   appearance: none;
   background-color: unset;
@@ -107,6 +107,7 @@
 }
 
 .editor {
+  display: block;
 }
 
 .root .editor .source {
@@ -116,7 +117,7 @@
 }
 
 .source > div > div {
-  display: none !important;
+  display: none;
 }
 
 .root .editor .source:first-child:last-child {
@@ -155,7 +156,7 @@
 .codeOnly .error,
 .codeOnly .progress,
 .codeOnly :global(.cm-editor) {
-  display: none !important;
+  display: none;
 }
 .codeOnly .editor .source {
   display: block;

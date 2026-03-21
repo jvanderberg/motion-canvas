@@ -1,6 +1,6 @@
 import {MetaField, ObjectMetaField} from '../meta';
 import {Random} from './Random';
-import {SerializedTimeEvent} from './timeEvents';
+import type {SerializedTimeEvent} from './timeEvents';
 
 /**
  * Create a runtime representation of the scene metadata.

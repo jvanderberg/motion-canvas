@@ -1,18 +1,18 @@
 import './index.scss';
 
 import {
+  experimentalLog,
   Player,
   Presenter,
+  type Project,
   Renderer,
   Stage,
-  experimentalLog,
-  type Project,
 } from '@motion-canvas/core';
-import {ComponentChild, render} from 'preact';
-import {Editor} from './Editor';
-import {ProjectData, ProjectSelection} from './ProjectSelection';
+import {type ComponentChild, render} from 'preact';
 import {ApplicationProvider, PanelsProvider} from './contexts';
 import {ShortcutsProvider} from './contexts/shortcuts';
+import {Editor} from './Editor';
+import {type ProjectData, ProjectSelection} from './ProjectSelection';
 import GridPlugin from './plugin/GridPlugin';
 import {projectNameSignal} from './signals';
 import {getItem, setItem} from './utils';
@@ -68,10 +68,14 @@ export function editor(project: Project) {
   }
 
   const renderer = new Renderer(project);
-  project.plugins.forEach(plugin => plugin.renderer?.(renderer));
+  project.plugins.forEach(plugin => {
+    plugin.renderer?.(renderer);
+  });
 
   const presenter = new Presenter(project);
-  project.plugins.forEach(plugin => plugin.presenter?.(presenter));
+  project.plugins.forEach(plugin => {
+    plugin.presenter?.(presenter);
+  });
 
   const settings = project.settings;
   settings.appearance.color.onChanged.subscribe(() => {
@@ -131,7 +135,9 @@ export function editor(project: Project) {
     getItem(playerKey, {}),
     getItem(frameKey, -1),
   );
-  project.plugins.forEach(plugin => plugin.player?.(player));
+  project.plugins.forEach(plugin => {
+    plugin.player?.(player);
+  });
 
   player.onStateChanged.subscribe(state => {
     setItem(playerKey, state);

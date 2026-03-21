@@ -56,7 +56,7 @@ export function Navigation() {
         </Tab>
         {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
         {tabs.map(({name, tabComponent: Component}) => (
-          <Component tab={name} />
+          <Component key={name} tab={name} />
         ))}
         <Tab title="Thread Debugger" id="threads-tab" tab={EditorPanel.Threads}>
           <HourglassBottom />

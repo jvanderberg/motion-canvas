@@ -1,6 +1,5 @@
 import {describe, expect, test, vi} from 'vitest';
 import {createSignal} from './createSignal';
-
 import {createEffect} from './createEffect';
 
 describe('createEffect()', () => {

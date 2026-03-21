@@ -1,9 +1,8 @@
 import Link from '@docusaurus/Link';
-import {ThemeConfig} from '@docusaurus/preset-classic';
+import type {ThemeConfig} from '@docusaurus/preset-classic';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ThemedImage from '@theme/ThemedImage';
 import clsx from 'clsx';
-import React from 'react';
 import styles from './styles.module.css';
 
 export default function HomepageHeader() {
@@ -35,6 +34,7 @@ export default function HomepageHeader() {
             className="button button--outline button--lg"
             href="https://github.com/motion-canvas/motion-canvas/blob/main/CONTRIBUTING.md"
             target="_blank"
+            rel="noopener"
           >
             Contribute
           </a>

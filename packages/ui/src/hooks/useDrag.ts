@@ -1,13 +1,9 @@
 import {useCallback, useState} from 'preact/hooks';
 import {useDocumentEvent} from './useDocumentEvent';
 
-interface MoveCallback {
-  (dx: number, dy: number, x: number, y: number): void;
-}
+type MoveCallback = (dx: number, dy: number, x: number, y: number) => void;
 
-interface DropCallback {
-  (event: MouseEvent): void;
-}
+type DropCallback = (event: MouseEvent) => void;
 
 export function useDrag(
   onMove: MoveCallback,

@@ -1,11 +1,10 @@
-import {JSX, Ref} from 'preact';
-
-import {Color} from '@motion-canvas/core';
+import type {Color} from '@motion-canvas/core';
 import {hsv} from 'chroma-js';
+import type {JSX, Ref} from 'preact';
 import {forwardRef} from 'preact/compat';
 import {useEffect, useRef, useState} from 'preact/hooks';
 import {useSize} from '../../hooks';
-import {MouseButton, clamp} from '../../utils';
+import {clamp, MouseButton} from '../../utils';
 import styles from './Controls.module.scss';
 import {NumberInput} from './NumberInput';
 
@@ -24,7 +23,7 @@ function ColorPickerInternal(
   const hueRect = useSize(hueRef);
 
   const [hue, setHue] = useState(
-    isNaN(color.hsv()[0]) ? 0 : color.hsv()[0] / 360,
+    Number.isNaN(color.hsv()[0]) ? 0 : color.hsv()[0] / 360,
   );
   const [saturation, setSaturation] = useState(color.hsv()[1]);
   const [value, setValue] = useState(color.hsv()[2]);

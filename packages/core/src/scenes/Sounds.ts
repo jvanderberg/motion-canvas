@@ -114,8 +114,7 @@ export class Sounds {
     this.registeredSounds.push({
       offset: playbackTime,
       realPlaybackRate:
-        Math.pow(2, (settings.detune ?? 0) / 1200) *
-        (settings.playbackRate ?? 1),
+        2 ** ((settings.detune ?? 0) / 1200) * (settings.playbackRate ?? 1),
       ...settings,
     });
   }

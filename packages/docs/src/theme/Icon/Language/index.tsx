@@ -6,7 +6,6 @@
  */
 
 import type {Props} from '@theme/Icon/Language';
-import React from 'react';
 
 export default function IconLanguage({
   width = 20,

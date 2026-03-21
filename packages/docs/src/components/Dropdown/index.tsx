@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export interface DropdownProps {
   options: {
@@ -36,7 +36,7 @@ export default function Dropdown({
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [ref]);
+  }, []);
 
   return (
     <div

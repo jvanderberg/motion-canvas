@@ -1,10 +1,10 @@
 import {CODE, Code, lines, makeScene2D, word} from '@motion-canvas/2d';
 import {
-  DEFAULT,
-  SimpleSignal,
   createRef,
   createSignal,
+  DEFAULT,
   easeOutCubic,
+  type SimpleSignal,
   waitFor,
 } from '@motion-canvas/core';
 

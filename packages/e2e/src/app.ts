@@ -1,6 +1,6 @@
-import * as path from 'path';
-import {Page, firefox} from 'playwright';
-import {fileURLToPath} from 'url';
+import * as path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {firefox, type Page} from 'playwright';
 import {createServer} from 'vite';
 
 const Root = fileURLToPath(new URL('.', import.meta.url));

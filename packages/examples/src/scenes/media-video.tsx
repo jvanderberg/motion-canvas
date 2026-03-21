@@ -1,4 +1,4 @@
-import {Video, makeScene2D} from '@motion-canvas/2d';
+import {makeScene2D, Video} from '@motion-canvas/2d';
 import {createRef} from '@motion-canvas/core';
 
 import exampleMp4 from '@motion-canvas/examples/assets/example.mp4';

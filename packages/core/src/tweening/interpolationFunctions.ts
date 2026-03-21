@@ -1,13 +1,16 @@
 import {Vector2} from '../types';
 import {useLogger} from '../utils';
 
-export interface InterpolationFunction<T, TRest extends any[] = any[]> {
-  (from: T, to: T, value: number, ...args: TRest): T;
-}
+export type InterpolationFunction<T, TRest extends any[] = any[]> = (
+  from: T,
+  to: T,
+  value: number,
+  ...args: TRest
+) => T;
 
-export function textLerp(fromString: string, toString: string, value: number) {
+export function textLerp(fromString: string, toStr: string, value: number) {
   const from = [...fromString];
-  const to = [...toString];
+  const to = [...toStr];
 
   // left to right
   if (to.length >= from.length) {

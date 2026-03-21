@@ -1,5 +1,5 @@
 import {decorate, threadable} from '../decorators';
-import {ThreadGenerator, isThreadGenerator} from '../threading';
+import {isThreadGenerator, type ThreadGenerator} from '../threading';
 import {waitFor} from './scheduling';
 
 decorate(delay, threadable());

@@ -4,15 +4,15 @@ import {
   EnumMetaField,
   NumberMetaField,
   ObjectMetaField,
-  ValueOf,
+  type ValueOf,
 } from '../meta';
 import {clamp} from '../tweening';
-import {CanvasOutputMimeType} from '../types';
+import type {CanvasOutputMimeType} from '../types';
 import type {Exporter} from './Exporter';
 import type {Logger} from './Logger';
 import type {Project} from './Project';
-import type {RendererSettings} from './Renderer';
 import {FileTypes} from './presets';
+import type {RendererSettings} from './Renderer';
 
 const EXPORT_FRAME_LIMIT = 256;
 const EXPORT_RETRY_DELAY = 1000;
@@ -33,7 +33,7 @@ export class ImageExporter implements Exporter {
   public static readonly displayName = 'Image sequence';
 
   public static meta() {
-    const meta = new ObjectMetaField(this.name, {
+    const meta = new ObjectMetaField(ImageExporter.name, {
       fileType: new EnumMetaField('file type', FileTypes),
       quality: new NumberMetaField('quality', 100)
         .setRange(0, 100)
@@ -62,7 +62,7 @@ export class ImageExporter implements Exporter {
   static {
     if (import.meta.hot) {
       import.meta.hot.on('motion-canvas:export-ack', response => {
-        this.response.dispatch(response);
+        ImageExporter.response.dispatch(response);
       });
     }
   }
@@ -75,7 +75,7 @@ export class ImageExporter implements Exporter {
 
   public constructor(
     private readonly logger: Logger,
-    private readonly settings: RendererSettings,
+    readonly settings: RendererSettings,
   ) {
     const options = settings.exporter.options as ImageExporterOptions;
     this.projectName = settings.name;

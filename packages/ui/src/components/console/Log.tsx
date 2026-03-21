@@ -1,14 +1,13 @@
-import styles from './Console.module.scss';
-
-import {LogLevel, LogPayload} from '@motion-canvas/core';
+import {LogLevel, type LogPayload} from '@motion-canvas/core';
 import clsx from 'clsx';
 import {useEffect, useMemo, useState} from 'preact/hooks';
 import {useApplication} from '../../contexts';
 import {useFormattedNumber} from '../../hooks';
-import {StackTraceEntry, resolveStackTrace} from '../../utils';
+import {resolveStackTrace, type StackTraceEntry} from '../../utils';
 import {IconButton, Toggle} from '../controls';
 import {Locate} from '../icons';
 import {Collapse} from '../layout';
+import styles from './Console.module.scss';
 import {SourceCodeFrame} from './SourceCodeFrame';
 import {StackTrace} from './StackTrace';
 

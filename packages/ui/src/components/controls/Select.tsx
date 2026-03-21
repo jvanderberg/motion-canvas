@@ -28,7 +28,8 @@ export function Select<T>({
       value={options.findIndex(option => option.value === value)}
       onChange={event => {
         onChange(
-          options[parseInt((event.target as HTMLSelectElement).value)].value,
+          options[parseInt((event.target as HTMLSelectElement).value, 10)]
+            .value,
         );
         (event.target as HTMLSelectElement).blur();
       }}

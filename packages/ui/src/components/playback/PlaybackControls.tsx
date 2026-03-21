@@ -1,5 +1,3 @@
-import styles from './Playback.module.scss';
-
 import {useCallback, useRef} from 'preact/hooks';
 import {useApplication} from '../../contexts';
 import {
@@ -22,6 +20,7 @@ import {
   VolumeOn,
 } from '../icons';
 import {Framerate} from './Framerate';
+import styles from './Playback.module.scss';
 
 export function PlaybackControls() {
   const {player, renderer, meta, project} = useApplication();
@@ -117,7 +116,7 @@ export function PlaybackControls() {
               <Slider
                 value={state.volume}
                 onChange={volume => {
-                  if (isNaN(volume)) {
+                  if (Number.isNaN(volume)) {
                     volume = 0;
                   }
                   player.setAudioVolume(volume);
@@ -204,7 +203,7 @@ export function PlaybackControls() {
           value={
             scenes.length === allScenes.length
               ? '__all__'
-              : currentScene?.name ?? ''
+              : (currentScene?.name ?? '')
           }
           onChange={name => {
             if (name === '__all__') {

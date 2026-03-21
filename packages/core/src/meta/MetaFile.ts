@@ -96,7 +96,7 @@ export class MetaFile<T> {
   static {
     if (import.meta.hot) {
       import.meta.hot.on('motion-canvas:meta-ack', ({source}) => {
-        this.sourceLookup[source]?.();
+        MetaFile.sourceLookup[source]?.();
       });
     }
   }

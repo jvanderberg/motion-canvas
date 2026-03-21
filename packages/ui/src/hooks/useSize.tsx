@@ -1,4 +1,4 @@
-import {MutableRef, useEffect, useMemo, useState} from 'preact/hooks';
+import {type MutableRef, useEffect, useMemo, useState} from 'preact/hooks';
 
 export function useSize<T extends Element>(
   ref: MutableRef<T>,

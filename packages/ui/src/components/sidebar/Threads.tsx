@@ -1,5 +1,3 @@
-import styles from './Sidebar.module.scss';
-
 import {getTaskName, isThreadable, type Thread} from '@motion-canvas/core';
 import {
   useCurrentFrame,
@@ -7,6 +5,7 @@ import {
   useSubscribableValue,
 } from '../../hooks';
 import {Pane} from '../tabs';
+import styles from './Sidebar.module.scss';
 
 export function Threads() {
   useCurrentFrame();
@@ -37,7 +36,7 @@ function ThreadView({thread}: ThreadViewProps) {
       {thread.children.length > 0 && (
         <ul className={styles.threadList}>
           {thread.children.map(value => (
-            <ThreadView thread={value} />
+            <ThreadView key={getTaskName(value.runner)} thread={value} />
           ))}
         </ul>
       )}

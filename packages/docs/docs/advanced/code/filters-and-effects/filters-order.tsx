@@ -1,12 +1,12 @@
 import {
   Circle,
+  contrast,
   Grid,
   Layout,
-  Rect,
-  Txt,
-  contrast,
   makeScene2D,
+  Rect,
   saturate,
+  Txt,
 } from '@motion-canvas/2d';
 import {createSignal, linear, map, waitFor} from '@motion-canvas/core';
 
@@ -54,14 +54,8 @@ export default makeScene2D(function* (view) {
       <Grid size={200} stroke={'gray'} lineWidth={1} spacing={40} />
       <Grid size={200} stroke={'#333'} lineWidth={1} spacing={20} />
       <Rect size={200} stroke={'gray'} lineWidth={2} />
-      <Txt
-        fill={'white'}
-        text={'saturation'}
-        rotation={-90}
-        x={-115}
-        fill={'#ffa'}
-      />
-      <Txt fill={'white'} text={'contrast'} y={115} fill={'#aff'} />
+      <Txt fill={'#ffa'} text={'saturation'} rotation={-90} x={-115} />
+      <Txt fill={'#aff'} text={'contrast'} y={115} />
       <Txt fill={'white'} text={'1'} position={[-115, 100]} />
       <Txt fill={'white'} text={'1'} position={[-100, 115]} />
       <Txt fill={'white'} text={'5'} position={[-115, -90]} />

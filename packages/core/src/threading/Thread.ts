@@ -2,9 +2,9 @@ import {EventDispatcher} from '../events';
 import {noop} from '../flow';
 import {createSignal} from '../signals';
 import {endThread, startThread, useLogger} from '../utils';
-import {ThreadGenerator, isThreadGenerator} from './ThreadGenerator';
 import reusedGenerator from './__logs__/reused-generator.md';
 import {getTaskName, setTaskName} from './names';
+import {isThreadGenerator, type ThreadGenerator} from './ThreadGenerator';
 
 /**
  * A class representing an individual thread.

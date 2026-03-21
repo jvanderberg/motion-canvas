@@ -1,4 +1,4 @@
-import {MutableRef, useCallback} from 'preact/hooks';
+import {type MutableRef, useCallback} from 'preact/hooks';
 import {useDocumentEvent} from './useDocumentEvent';
 
 export function useClickOutside<T extends Element>(

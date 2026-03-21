@@ -1,16 +1,14 @@
 import {decorate, threadable} from '../decorators';
-import {ThreadGenerator} from '../threading';
+import type {ThreadGenerator} from '../threading';
 import {useLogger, useThread} from '../utils';
 import infiniteLoop from './__logs__/infinite-loop.md';
 
-export interface LoopCallback {
-  /**
-   * A callback called by {@link loop} during each iteration.
-   *
-   * @param i - The current iteration index.
-   */
-  (i: number): ThreadGenerator | void;
-}
+/**
+ * A callback called by {@link loop} during each iteration.
+ *
+ * @param i - The current iteration index.
+ */
+export type LoopCallback = (i: number) => ThreadGenerator | void;
 
 decorate(loop, threadable());
 

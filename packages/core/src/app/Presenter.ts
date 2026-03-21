@@ -8,7 +8,7 @@ import {PlaybackManager, PlaybackState} from './PlaybackManager';
 import {PlaybackStatus} from './PlaybackStatus';
 import type {Project} from './Project';
 import {SharedWebGLContext} from './SharedWebGLContext';
-import {Stage, StageSettings} from './Stage';
+import {Stage, type StageSettings} from './Stage';
 
 export interface PresenterSettings extends StageSettings {
   name: string;
@@ -68,6 +68,7 @@ export class Presenter {
   private readonly sharedWebGLContext: SharedWebGLContext;
   private abortController: AbortController | null = null;
   private renderTime = 0;
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: used via ??= in request()
   private requestId: number | null = null;
   private requestedResume = false;
   private requestedSlide:

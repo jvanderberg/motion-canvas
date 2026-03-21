@@ -1,4 +1,4 @@
-import {setTaskName, ThreadGenerator} from '../threading';
+import {setTaskName, type ThreadGenerator} from '../threading';
 /**
  * Turn the given generator function into a task.
  *
@@ -50,7 +50,7 @@ export function run(
   firstArg: (() => ThreadGenerator) | string,
   runner?: () => ThreadGenerator,
 ): ThreadGenerator {
-  let task;
+  let task: ThreadGenerator;
   if (typeof firstArg === 'string') {
     task = runner!();
     setTaskName(task, firstArg);

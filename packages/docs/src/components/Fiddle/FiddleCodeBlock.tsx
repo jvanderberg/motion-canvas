@@ -1,7 +1,7 @@
 import Fiddle from '@site/src/components/Fiddle/index';
 import CodeBlock from '@theme/CodeBlock';
-import {Props} from '@theme/MDXComponents/Pre';
-import React, {isValidElement} from 'react';
+import type {Props} from '@theme/MDXComponents/Pre';
+import {isValidElement} from 'react';
 
 export default function FiddleCodeBlock(props: Props) {
   if (

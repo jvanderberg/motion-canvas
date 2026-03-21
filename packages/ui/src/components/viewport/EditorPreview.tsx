@@ -1,7 +1,11 @@
 import clsx from 'clsx';
-import {ComponentChildren} from 'preact';
+import type {ComponentChildren} from 'preact';
 import {useCallback, useMemo, useRef} from 'preact/hooks';
-import {ViewportProvider, ViewportState, useApplication} from '../../contexts';
+import {
+  useApplication,
+  ViewportProvider,
+  type ViewportState,
+} from '../../contexts';
 import {
   useDocumentEvent,
   useDrag,
@@ -68,7 +72,7 @@ export function EditorPreview() {
       if (width * newZoom > size.width) {
         newZoom = size.width / width;
       }
-      if (!isNaN(newZoom) && newZoom > 0 && newZoom < Infinity) {
+      if (!Number.isNaN(newZoom) && newZoom > 0 && newZoom < Infinity) {
         state.zoom = newZoom;
       }
       state.x = 0;
@@ -143,7 +147,7 @@ export function EditorPreview() {
     {value: 1, text: '100%'},
     {value: 2, text: '200%'},
   ];
-  let value;
+  let value: number;
   if (zoomToFit) {
     value = 0;
   } else {
@@ -208,7 +212,11 @@ export function EditorPreview() {
         >
           {plugins.reduce((children, plugin) => {
             const Component = plugin.previewOverlay?.component;
-            return Component ? <Component>{children}</Component> : children;
+            return Component ? (
+              <Component key={plugin.name}>{children}</Component>
+            ) : (
+              children
+            );
           }, undefined as ComponentChildren)}
         </div>
         <div className={clsx(styles.overlay, styles.controls)}>

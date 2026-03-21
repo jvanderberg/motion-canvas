@@ -22,7 +22,7 @@ jobs:
       - run: npm ci
       - run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --verbose
   lint:
-    name: Lint
+    name: Lint & Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,18 +31,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npx eslint "**/*.ts?(x)"
-  prettier:
-    name: Code style
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run prettier
+      - run: npm run lint
   build:
     name: Build
     runs-on: ubuntu-latest

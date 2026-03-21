@@ -1,8 +1,8 @@
 import {decorate, threadable} from '../decorators';
 import {usePlayback} from '../utils';
-import {Thread} from './Thread';
-import {ThreadGenerator, isThreadGenerator} from './ThreadGenerator';
 import {setTaskName} from './names';
+import {Thread} from './Thread';
+import {isThreadGenerator, type ThreadGenerator} from './ThreadGenerator';
 
 /**
  * Check if the given value is a [Promise][promise].
@@ -18,13 +18,9 @@ export function isPromise(value: any): value is Promise<any> {
 /**
  * A generator function or a normal function that returns a generator.
  */
-export interface ThreadsFactory {
-  (): ThreadGenerator;
-}
+export type ThreadsFactory = () => ThreadGenerator;
 
-export interface ThreadsCallback {
-  (root: Thread): void;
-}
+export type ThreadsCallback = (root: Thread) => void;
 
 decorate(threads, threadable());
 /**

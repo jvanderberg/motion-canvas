@@ -1,4 +1,4 @@
-import {Color} from '@motion-canvas/core';
+import type {Color} from '@motion-canvas/core';
 import {ColorPreview} from '../controls/ColorPreview';
 import {Field, FieldSet, FieldValue, NumericField} from './Layout';
 

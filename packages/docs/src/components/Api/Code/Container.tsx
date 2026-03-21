@@ -1,7 +1,6 @@
-import React, {ReactNode} from 'react';
-
 import Container from '@theme/CodeBlock/Container';
 import clsx from 'clsx';
+import type {ReactNode} from 'react';
 import styles from './styles.module.css';
 
 export default function ApiContainer({

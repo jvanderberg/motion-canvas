@@ -1,5 +1,5 @@
 import {Stage} from '@motion-canvas/core';
-import {JSX} from 'preact';
+import type {JSX} from 'preact';
 import {useEffect, useState} from 'preact/hooks';
 import {useApplication} from '../../contexts';
 import {
@@ -15,16 +15,12 @@ export function PreviewStage(props: JSX.HTMLAttributes<HTMLDivElement>) {
   const {size, background} = useSharedSettings();
   const {resolutionScale} = usePreviewSettings();
 
-  useSubscribable(
-    player.onRender,
-    async () => {
-      await stage.render(
-        player.playback.currentScene,
-        player.playback.previousScene,
-      );
-    },
-    [],
-  );
+  useSubscribable(player.onRender, async () => {
+    await stage.render(
+      player.playback.currentScene,
+      player.playback.previousScene,
+    );
+  }, []);
 
   useEffect(() => {
     stage.configure({resolutionScale, size, background});

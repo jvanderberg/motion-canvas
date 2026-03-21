@@ -1,8 +1,7 @@
-import styles from './Timeline.module.scss';
-
 import clsx from 'clsx';
 import {useMemo} from 'preact/hooks';
 import {useTimelineContext} from '../../contexts';
+import styles from './Timeline.module.scss';
 
 export function Timestamps() {
   const {

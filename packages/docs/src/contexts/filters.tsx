@@ -1,6 +1,6 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import React, {ReactNode, useContext, useState} from 'react';
+import React, {type ReactNode, useContext, useState} from 'react';
 import type {JSONOutput} from 'typedoc';
 
 export interface Filters {

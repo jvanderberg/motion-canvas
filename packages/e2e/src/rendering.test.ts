@@ -1,7 +1,7 @@
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import {toMatchImageSnapshot} from 'jest-image-snapshot';
 import {afterAll, beforeAll, describe, expect, test} from 'vitest';
-import {App, start} from './app';
+import {type App, start} from './app';
 
 expect.extend({toMatchImageSnapshot});
 

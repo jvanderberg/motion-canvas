@@ -1,5 +1,12 @@
 # Motion Canvas Animation Project
 
+## Before Committing
+
+Run `npm run check` before every commit. This runs Biome (lint + format), TypeScript type checking, and tests.
+Do not commit code that fails `npm run check`.
+
+**Important:** After modifying core package source, rebuild `lib/` with `npx tspc -p packages/core/tsconfig.build.json` so 2d tests can resolve `.md` imports.
+
 ## Editor Setup
 
 The Vite dev server runs on port 9000. The editor must be open in a browser for

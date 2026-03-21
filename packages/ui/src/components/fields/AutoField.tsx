@@ -1,5 +1,5 @@
-import {Color, Spacing, Vector2, isType} from '@motion-canvas/core';
-import {FunctionComponent} from 'preact';
+import {Color, isType, Spacing, Vector2} from '@motion-canvas/core';
+import type {FunctionComponent} from 'preact';
 import {ArrayField} from './ArrayField';
 import {ColorField} from './ColorField';
 import {NumberField} from './NumberField';

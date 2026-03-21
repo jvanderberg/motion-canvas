@@ -6,7 +6,7 @@ import TypeAliasPreview from '@site/src/components/Api/Preview/TypeAliasPreview'
 import TypeLiteralPreview from '@site/src/components/Api/Preview/TypeLiteralPreview';
 import TypeParameterPreview from '@site/src/components/Api/Preview/TypeParameterPreview';
 import {ReflectionKind} from '@site/src/components/Api/ReflectionKind';
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import type {JSONOutput} from 'typedoc';
 
 export default function CodePreview({
@@ -66,7 +66,7 @@ export default function CodePreview({
     throw new Error(
       `Missing component for reflection: ${reflection.kindString}`,
     );
-  }, [reflection.id]);
+  }, [reflection.kind, reflection.kindString]);
 
   return <Component reflection={reflection} />;
 }

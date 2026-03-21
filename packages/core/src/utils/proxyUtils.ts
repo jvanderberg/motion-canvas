@@ -98,7 +98,7 @@ export function isProxyEnabled() {
  * try to parse the Env var on every call,
  * spamming the console in the process
  */
-let AllowListCache: string[] | undefined = undefined;
+let AllowListCache: string[] | undefined;
 /**
  * Return the list of allowed hosts
  * from the Plugin Config
@@ -114,7 +114,7 @@ function getAllowList() {
   // Inline function gets immediately invoked
   // and the result stored in getAllowListCache.
   // The cached value is used on subsequent requests.
-  const result = (function () {
+  const result = (() => {
     if (!isProxyEnabled() || !import.meta.env) {
       return [];
     }

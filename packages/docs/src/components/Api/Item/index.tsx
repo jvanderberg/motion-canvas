@@ -4,7 +4,7 @@ import ModuleItem from '@site/src/components/Api/Item/ModuleItem';
 import ProjectItem from '@site/src/components/Api/Item/ProjectItem';
 import PropertyItem from '@site/src/components/Api/Item/PropertyItem';
 import TypeAliasItem from '@site/src/components/Api/Item/TypeAliasItem';
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import type {JSONOutput} from 'typedoc';
 import {ReflectionKind} from '../ReflectionKind';
 
@@ -62,7 +62,7 @@ export default function Item({
     throw new Error(
       `Missing component for reflection: ${reflection.kindString}`,
     );
-  }, [reflection.kind]);
+  }, [reflection.kind, reflection.kindString]);
 
   return <Component reflection={reflection} headless={headless} />;
 }

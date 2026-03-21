@@ -1,5 +1,3 @@
-import React from 'react';
-
 import TokenList, {
   ListType,
   Separator,
@@ -14,8 +12,8 @@ export default function IntersectionType({
 }) {
   return (
     <TokenList type={ListType.Parentheses} separator={Separator.Ampersand}>
-      {type.types.map((item, index) => (
-        <Type key={index} type={item} />
+      {type.types.map(item => (
+        <Type key={JSON.stringify(item)} type={item} />
       ))}
     </TokenList>
   );

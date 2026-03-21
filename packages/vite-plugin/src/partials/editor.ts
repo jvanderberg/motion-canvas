@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import {Plugin} from 'vite';
-import {ProjectData} from '../plugins';
+import fs from 'node:fs';
+import path from 'node:path';
+import type {Plugin} from 'vite';
+import type {ProjectData} from '../plugins';
 
 interface EditorPluginConfig {
   editor: string;

@@ -1,7 +1,7 @@
 import type {Stage} from '@motion-canvas/core';
 import clsx from 'clsx';
-import {JSX} from 'preact';
-import {MutableRef, useLayoutEffect, useRef} from 'preact/hooks';
+import type {JSX} from 'preact';
+import {type MutableRef, useLayoutEffect, useRef} from 'preact/hooks';
 import {useSharedSettings} from '../../hooks';
 import styles from './Viewport.module.scss';
 

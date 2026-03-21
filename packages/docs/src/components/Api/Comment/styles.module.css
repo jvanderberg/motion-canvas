@@ -1,6 +1,6 @@
 .toggle::after {
   display: inline-block;
-  content: '';
+  content: "";
   background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 2rem;
   filter: var(--ifm-menu-link-sublist-icon-filter);
   height: 1.25rem;

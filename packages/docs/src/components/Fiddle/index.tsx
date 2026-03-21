@@ -6,20 +6,7 @@ import {EditorView, keymap} from '@codemirror/view';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import {useLocation} from '@docusaurus/router';
 import type {Player} from '@motion-canvas/core';
-import IconImage from '@site/src/Icon/Image';
-import {Pause} from '@site/src/Icon/Pause';
-import {PlayArrow} from '@site/src/Icon/PlayArrow';
-import {SkipNext} from '@site/src/Icon/SkipNext';
-import {SkipPrevious} from '@site/src/Icon/SkipPrevious';
-import IconSplit from '@site/src/Icon/Split';
-import IconText from '@site/src/Icon/Text';
 import Dropdown from '@site/src/components/Dropdown';
-import {
-  borrowPlayer,
-  disposePlayer,
-  tryBorrowPlayer,
-  updatePlayer,
-} from '@site/src/components/Fiddle/SharedPlayer';
 import {autocomplete} from '@site/src/components/Fiddle/autocomplete';
 import {
   clearErrors,
@@ -34,19 +21,32 @@ import {
 } from '@site/src/components/Fiddle/folding';
 import {parseFiddle} from '@site/src/components/Fiddle/parseFiddle';
 import {
+  borrowPlayer,
+  disposePlayer,
+  tryBorrowPlayer,
+  updatePlayer,
+} from '@site/src/components/Fiddle/SharedPlayer';
+import {
   EditorTheme,
   SyntaxHighlightStyle,
 } from '@site/src/components/Fiddle/themes';
 import {
-  TransformError,
   compileScene,
+  TransformError,
   transform,
 } from '@site/src/components/Fiddle/transformer';
+import IconImage from '@site/src/Icon/Image';
+import {Pause} from '@site/src/Icon/Pause';
+import {PlayArrow} from '@site/src/Icon/PlayArrow';
+import {SkipNext} from '@site/src/Icon/SkipNext';
+import {SkipPrevious} from '@site/src/Icon/SkipPrevious';
+import IconSplit from '@site/src/Icon/Split';
+import IconText from '@site/src/Icon/Text';
 import {useSubscribableValue} from '@site/src/utils/useSubscribable';
 import CodeBlock from '@theme/CodeBlock';
 import clsx from 'clsx';
 import {basicSetup} from 'codemirror';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import styles from './styles.module.css';
 
 export interface FiddleProps {
@@ -95,33 +95,36 @@ export default function Fiddle({
     if (ratio.includes('/')) {
       const parts = ratio.split('/');
       const calculated = parseFloat(parts[0]) / parseFloat(parts[1]);
-      if (!isNaN(calculated)) {
+      if (!Number.isNaN(calculated)) {
         return calculated;
       }
     }
     const value = parseFloat(ratio);
-    return isNaN(value) ? 4 : value;
+    return Number.isNaN(value) ? 4 : value;
   }, [ratio]);
 
-  const update = async (newDoc: Text, animate = true) => {
-    await borrowPlayer(setPlayer, previewRef.current, parsedRatio, setError);
-    try {
-      const scene = await compileScene(newDoc.sliceString(0), pathname);
-      updatePlayer(scene);
-      setLastDoc(newDoc);
-      if (animate && !lastDoc?.eq(newDoc)) {
-        previewRef.current.animate(highlight(), {duration: 300});
+  const update = useCallback(
+    async (newDoc: Text, animate = true) => {
+      await borrowPlayer(setPlayer, previewRef.current, parsedRatio, setError);
+      try {
+        const scene = await compileScene(newDoc.sliceString(0), pathname);
+        updatePlayer(scene);
+        setLastDoc(newDoc);
+        if (animate && !lastDoc?.eq(newDoc)) {
+          previewRef.current.animate(highlight(), {duration: 300});
+        }
+        return true;
+      } catch (e) {
+        if (e instanceof TransformError) {
+          underlineErrors(editorView.current, e.errors, e.message);
+        }
+        setError(e.message);
+        player?.togglePlayback(false);
+        return false;
       }
-      return true;
-    } catch (e) {
-      if (e instanceof TransformError) {
-        underlineErrors(editorView.current, e.errors, e.message);
-      }
-      setError(e.message);
-      player?.togglePlayback(false);
-      return false;
-    }
-  };
+    },
+    [parsedRatio, pathname, lastDoc, player],
+  );
 
   const switchState = async (id: number) => {
     setSnippetId(id);
@@ -172,7 +175,7 @@ export default function Fiddle({
           ],
         }),
       })),
-    [children],
+    [children, update],
   );
 
   if (!ExecutionEnvironment.canUseDOM) {
@@ -206,7 +209,7 @@ export default function Fiddle({
       disposePlayer(setPlayer);
       editorView.current.destroy();
     };
-  }, []);
+  }, [mode, parsedRatio, snippetId, snippets, update]);
 
   // Ghost code is displayed before the editor is initialized.
   const ghostCode = useMemo(() => {
@@ -216,7 +219,7 @@ export default function Fiddle({
     if (range) {
       text = text.replace(range.from, range.to, Text.of(['...']));
     }
-    return text.toString() + '\n';
+    return `${text.toString()}\n`;
   }, [snippets]);
 
   const hasChangedSinceLastUpdate = lastDoc && doc && !doc.eq(lastDoc);

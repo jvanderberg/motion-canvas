@@ -1,21 +1,18 @@
+import * as fs from 'node:fs';
 import preact from '@preact/preset-vite';
-import * as fs from 'fs';
 import {defineConfig} from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   resolve: {
     alias: {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       '@motion-canvas/ui': '/src/main.tsx',
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       '@motion-canvas/2d/editor': '@motion-canvas/2d/src/editor',
     },
   },
   define: {
     // Preserve import.meta.hot in the library build so CLI remote control
     // code is not tree-shaken. The consuming Vite dev server provides it.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     'import.meta.hot': 'import.meta.hot',
   },
   build: {

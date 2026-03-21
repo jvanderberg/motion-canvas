@@ -3,16 +3,20 @@ import {
   EventDispatcher,
   ValueDispatcher,
 } from '../events';
-import {AudioManager, AudioManagerPool, AudioResourceManager} from '../media';
-import {Scene, Sound} from '../scenes';
+import {
+  type AudioManager,
+  AudioManagerPool,
+  AudioResourceManager,
+} from '../media';
+import type {Scene, Sound} from '../scenes';
 import {EditableTimeEvents} from '../scenes/timeEvents';
 import {clamp} from '../tweening';
 import {Vector2} from '../types';
 import {Semaphore} from '../utils';
-import {Logger} from './Logger';
+import type {Logger} from './Logger';
 import {PlaybackManager, PlaybackState} from './PlaybackManager';
 import {PlaybackStatus} from './PlaybackStatus';
-import {Project} from './Project';
+import type {Project} from './Project';
 import {SharedWebGLContext} from './SharedWebGLContext';
 
 export interface PlayerState extends Record<string, unknown> {
@@ -127,9 +131,9 @@ export class Player {
 
   public constructor(
     private project: Project,
-    private settings: Partial<PlayerSettings> = {},
-    private initialState: Partial<PlayerState> = {},
-    private initialFrame = -1,
+    settings: Partial<PlayerSettings> = {},
+    initialState: Partial<PlayerState> = {},
+    initialFrame = -1,
   ) {
     this.playerState = new ValueDispatcher<PlayerState>({
       loop: true,

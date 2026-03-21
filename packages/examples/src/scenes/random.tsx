@@ -1,4 +1,4 @@
-import {Layout, Rect, makeScene2D} from '@motion-canvas/2d';
+import {Layout, makeScene2D, Rect} from '@motion-canvas/2d';
 import {
   all,
   loop,
@@ -17,6 +17,7 @@ export default makeScene2D(function* (view) {
     <Layout layout gap={10} alignItems="center">
       {range(40).map(i => (
         <Rect
+          key={i}
           ref={makeRef(rects, i)}
           radius={5}
           width={10}

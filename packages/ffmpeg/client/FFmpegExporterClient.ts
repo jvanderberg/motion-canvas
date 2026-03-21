@@ -11,7 +11,7 @@ import {
   EventDispatcher,
   NumberMetaField,
   ObjectMetaField,
-  ValueOf,
+  type ValueOf,
 } from '@motion-canvas/core';
 
 type ServerResponse =
@@ -58,7 +58,7 @@ export class FFmpegExporterClient implements Exporter {
   public static readonly displayName = 'Video (FFmpeg)';
 
   public static meta(project: Project): MetaField<any> {
-    return new ObjectMetaField(this.displayName, {
+    return new ObjectMetaField(FFmpegExporterClient.displayName, {
       fastStart: new BoolMetaField('fast start', true),
       includeAudio: new BoolMetaField('include audio', true).disable(
         !project.audio,
@@ -77,7 +77,8 @@ export class FFmpegExporterClient implements Exporter {
     if (import.meta.hot) {
       import.meta.hot.on(
         `motion-canvas/ffmpeg-ack`,
-        (response: ServerResponse) => this.response.dispatch(response),
+        (response: ServerResponse) =>
+          FFmpegExporterClient.response.dispatch(response),
       );
     }
   }

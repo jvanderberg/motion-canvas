@@ -1,6 +1,6 @@
-import {InterpolationFunction, map} from '../tweening';
-import {Signal, SignalContext} from './SignalContext';
-import {SignalExtensions, SignalValue} from './types';
+import {type InterpolationFunction, map} from '../tweening';
+import {type Signal, SignalContext} from './SignalContext';
+import type {SignalExtensions, SignalValue} from './types';
 import {isReactive, modify} from './utils';
 
 export type CompoundSignal<
@@ -28,10 +28,7 @@ export class CompoundSignalContext<
   public readonly signals: [keyof TValue, Signal<any, any, TOwner>][] = [];
 
   public constructor(
-    private readonly entries: (
-      | TKeys
-      | [keyof TValue, Signal<any, any, TOwner>]
-    )[],
+    readonly entries: (TKeys | [keyof TValue, Signal<any, any, TOwner>])[],
     parser: (value: TSetterValue) => TValue,
     initial: SignalValue<TSetterValue>,
     interpolation: InterpolationFunction<TValue>,

@@ -15,7 +15,7 @@ describe('tween()', () => {
   test('Framerate-independent tween duration', () => {
     let time60 = NaN;
     const task60 = threads(function* () {
-      yield* tween(3.1415, () => {
+      yield* tween(Math.PI, () => {
         // do nothing
       });
       time60 = useTime();
@@ -23,7 +23,7 @@ describe('tween()', () => {
 
     let time24 = NaN;
     const task24 = threads(function* () {
-      yield* tween(3.1415, () => {
+      yield* tween(Math.PI, () => {
         // do nothing
       });
       time24 = useTime();
@@ -41,8 +41,8 @@ describe('tween()', () => {
       playback.frame++;
     }
 
-    expect(time60).toBeCloseTo(3.1415);
-    expect(time24).toBeCloseTo(3.1415);
+    expect(time60).toBeCloseTo(Math.PI);
+    expect(time24).toBeCloseTo(Math.PI);
   });
 
   test('Accumulated time offset', () => {

@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react';
+import type {ComponentProps} from 'react';
 
 export default function IconInfo(props: ComponentProps<'svg'>): JSX.Element {
   return (

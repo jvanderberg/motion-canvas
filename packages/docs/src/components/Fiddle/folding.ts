@@ -4,8 +4,8 @@ import {
   foldState,
   syntaxTree,
 } from '@codemirror/language';
-import {EditorState, Extension} from '@codemirror/state';
-import {EditorView} from '@codemirror/view';
+import type {EditorState, Extension} from '@codemirror/state';
+import type {EditorView} from '@codemirror/view';
 
 const FoldOffset = 'import '.length;
 

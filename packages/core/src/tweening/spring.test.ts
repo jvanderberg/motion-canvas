@@ -13,7 +13,7 @@ describe('spring()', () => {
   afterAll(() => endPlayback(status));
 
   test('Framerate-independent spring duration', () => {
-    let timeA;
+    let timeA: number | undefined;
     // should be around 1.13333333 seconds
     const taskA = threads(function* () {
       yield* spring(
@@ -31,7 +31,7 @@ describe('spring()', () => {
       timeA = useTime();
     });
 
-    let timeB;
+    let timeB: number | undefined;
     const taskB = threads(function* () {
       yield* spring(
         {
@@ -48,7 +48,7 @@ describe('spring()', () => {
       timeB = useTime();
     });
 
-    let timeC;
+    let timeC: number | undefined;
     const taskC = threads(function* () {
       yield* spring(
         {
@@ -89,7 +89,7 @@ describe('spring()', () => {
   });
 
   test('Accumulated time offset', () => {
-    let time;
+    let time: number | undefined;
     const task = threads(function* () {
       yield* spring(
         {

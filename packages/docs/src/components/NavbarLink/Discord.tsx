@@ -1,8 +1,8 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import IconDiscord from '@site/src/Icon/Discord';
 import NavbarLink from '@site/src/components/NavbarLink/Link';
+import IconDiscord from '@site/src/Icon/Discord';
 import useStorage from '@site/src/utils/useStorage';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 
 export default function DiscordNavbarLink() {
   const {siteConfig} = useDocusaurusContext();
@@ -12,7 +12,7 @@ export default function DiscordNavbarLink() {
       .then(response => response.json())
       .then(async data => setActiveUsers(data.presence_count))
       .catch(() => setActiveUsers(false));
-  }, []);
+  }, [setActiveUsers, siteConfig.customFields.discordApi]);
 
   return (
     <NavbarLink

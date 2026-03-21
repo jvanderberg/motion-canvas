@@ -1,6 +1,6 @@
-import path from 'path';
-import {Plugin, ResolvedConfig} from 'vite';
-import {PluginOptions, ProjectData} from '../plugins';
+import path from 'node:path';
+import type {Plugin, ResolvedConfig} from 'vite';
+import type {PluginOptions, ProjectData} from '../plugins';
 import {createMeta} from '../utils';
 import {getVersions} from '../versions';
 
@@ -85,7 +85,7 @@ import {MetaFile} from '@motion-canvas/core';
             input: Object.fromEntries(
               projects.map(project => [
                 project.name,
-                project.filePath + '?project',
+                `${project.filePath}?project`,
               ]),
             ),
           },

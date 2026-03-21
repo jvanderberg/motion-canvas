@@ -1,6 +1,6 @@
 import {waitFor} from '../flow';
-import {SignalValue} from '../signals';
-import {ThreadGenerator} from '../threading';
+import type {SignalValue} from '../signals';
+import type {ThreadGenerator} from '../threading';
 import {useTransition} from './useTransition';
 
 /**

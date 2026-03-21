@@ -1,10 +1,10 @@
 import styles from '@docusaurus/theme-classic/lib/theme/CodeBlock/Content/styles.module.css';
 import {useCodeWordWrap} from '@docusaurus/theme-common/internal';
-import IconExternalLink from '@site/src/Icon/ExternalLink';
 import customStyles from '@site/src/components/Api/Code/styles.module.css';
 import {useTokenStyle} from '@site/src/contexts/codeTheme';
+import IconExternalLink from '@site/src/Icon/ExternalLink';
 import clsx from 'clsx';
-import React, {ReactNode} from 'react';
+import type {ReactNode} from 'react';
 
 export default function CodeBlock({
   children,
@@ -36,7 +36,6 @@ export default function CodeBlock({
             onClick?.();
           }
         }}
-        tabIndex={0}
         ref={wordWrap.codeBlockRef}
         className={clsx(styles.codeBlock, 'thin-scrollbar')}
       >

@@ -8,9 +8,9 @@ import {
   RangeMetaField,
   Vector2MetaField,
 } from '../meta';
-import {CanvasColorSpace, Color, Vector2} from '../types';
-import {ColorSpaces, FrameRates, Scales} from './presets';
+import {type CanvasColorSpace, type Color, Vector2} from '../types';
 import type {Project} from './Project';
+import {ColorSpaces, FrameRates, Scales} from './presets';
 
 function createProjectMetadata(project: Project) {
   const meta = {

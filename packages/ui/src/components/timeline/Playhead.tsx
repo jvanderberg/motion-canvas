@@ -1,8 +1,7 @@
-import styles from './Timeline.module.scss';
-
-import {Signal} from '@preact/signals';
+import type {Signal} from '@preact/signals';
 import {useTimelineContext} from '../../contexts';
 import {usePlayerState, usePlayerTime} from '../../hooks';
+import styles from './Timeline.module.scss';
 
 interface PlayheadProps {
   seeking: Signal<number | null>;

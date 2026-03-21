@@ -1,4 +1,4 @@
-import {Spacing} from '@motion-canvas/core';
+import type {Spacing} from '@motion-canvas/core';
 import {Field, FieldSet, FieldValue, NumericField} from './Layout';
 
 export interface SpacingFieldProps {

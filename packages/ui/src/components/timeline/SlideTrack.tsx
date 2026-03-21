@@ -1,4 +1,4 @@
-import {Scene} from '@motion-canvas/core';
+import type {Scene} from '@motion-canvas/core';
 import clsx from 'clsx';
 import {useApplication} from '../../contexts';
 import {useSubscribableValue} from '../../hooks';
@@ -24,6 +24,7 @@ export function SlideTrack({scene, duration}: SlideTrackProps) {
       )}
       {slides.map((slide, index) => (
         <div
+          key={slide.id}
           className={styles.clip}
           style={{
             width: `${
@@ -55,7 +56,5 @@ export function SlideTrack({scene, duration}: SlideTrackProps) {
         </div>
       ))}
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 }

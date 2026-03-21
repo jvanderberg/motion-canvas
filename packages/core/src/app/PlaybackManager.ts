@@ -158,7 +158,9 @@ export class PlaybackManager {
   }
 
   public reload(description?: SceneDescriptionReload<never>) {
-    this.scenes.current.forEach(scene => scene.reload(description));
+    this.scenes.current.forEach(scene => {
+      scene.reload(description);
+    });
   }
 
   public async recalculate() {
@@ -240,7 +242,7 @@ export class PlaybackManager {
       return scenes[0];
     }
 
-    const index = scenes.findIndex(s => s === scene);
+    const index = scenes.indexOf(scene);
     if (index < 0) {
       return null;
     }

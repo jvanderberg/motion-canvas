@@ -1,8 +1,10 @@
 import {map, remap} from './interpolationFunctions';
 
-export interface TimingFunction {
-  (value: number, from?: number, to?: number): number;
-}
+export type TimingFunction = (
+  value: number,
+  from?: number,
+  to?: number,
+) => number;
 
 /*
  * All easing implementations taken from https://easings.net/
@@ -39,13 +41,13 @@ export function easeInQuad(value: number, from = 0, to = 1): number {
 }
 
 export function easeOutQuad(value: number, from = 0, to = 1): number {
-  value = 1 - Math.pow(1 - value, 2);
+  value = 1 - (1 - value) ** 2;
 
   return map(from, to, value);
 }
 
 export function easeInOutQuad(value: number, from = 0, to = 1) {
-  value = value < 0.5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
+  value = value < 0.5 ? 2 * value * value : 1 - (-2 * value + 2) ** 2 / 2;
 
   return map(from, to, value);
 }
@@ -58,16 +60,14 @@ export function easeInCubic(value: number, from = 0, to = 1): number {
 }
 
 export function easeOutCubic(value: number, from = 0, to = 1): number {
-  value = 1 - Math.pow(1 - value, 3);
+  value = 1 - (1 - value) ** 3;
 
   return map(from, to, value);
 }
 
 export function easeInOutCubic(value: number, from = 0, to = 1) {
   value =
-    value < 0.5
-      ? 4 * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 3) / 2;
+    value < 0.5 ? 4 * value * value * value : 1 - (-2 * value + 2) ** 3 / 2;
 
   return map(from, to, value);
 }
@@ -80,7 +80,7 @@ export function easeInQuart(value: number, from = 0, to = 1): number {
 }
 
 export function easeOutQuart(value: number, from = 0, to = 1): number {
-  value = 1 - Math.pow(1 - value, 4);
+  value = 1 - (1 - value) ** 4;
 
   return map(from, to, value);
 }
@@ -89,7 +89,7 @@ export function easeInOutQuart(value: number, from = 0, to = 1) {
   value =
     value < 0.5
       ? 8 * value * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 4) / 2;
+      : 1 - (-2 * value + 2) ** 4 / 2;
 
   return map(from, to, value);
 }
@@ -102,7 +102,7 @@ export function easeInQuint(value: number, from = 0, to = 1): number {
 }
 
 export function easeOutQuint(value: number, from = 0, to = 1): number {
-  value = 1 - Math.pow(1 - value, 5);
+  value = 1 - (1 - value) ** 5;
 
   return map(from, to, value);
 }
@@ -111,20 +111,20 @@ export function easeInOutQuint(value: number, from = 0, to = 1) {
   value =
     value < 0.5
       ? 16 * value * value * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 5) / 2;
+      : 1 - (-2 * value + 2) ** 5 / 2;
 
   return map(from, to, value);
 }
 
 // Exponential
 export function easeInExpo(value: number, from = 0, to = 1) {
-  value = value === 0 ? 0 : Math.pow(2, 10 * value - 10);
+  value = value === 0 ? 0 : 2 ** (10 * value - 10);
 
   return map(from, to, value);
 }
 
 export function easeOutExpo(value: number, from = 0, to = 1) {
-  value = value === 1 ? 1 : 1 - Math.pow(2, -10 * value);
+  value = value === 1 ? 1 : 1 - 2 ** (-10 * value);
 
   return map(from, to, value);
 }
@@ -136,21 +136,21 @@ export function easeInOutExpo(value: number, from = 0, to = 1) {
       : value === 1
         ? 1
         : value < 0.5
-          ? Math.pow(2, 20 * value - 10) / 2
-          : (2 - Math.pow(2, -20 * value + 10)) / 2;
+          ? 2 ** (20 * value - 10) / 2
+          : (2 - 2 ** (-20 * value + 10)) / 2;
 
   return map(from, to, value);
 }
 
 // Circular
 export function easeInCirc(value: number, from = 0, to = 1) {
-  value = 1 - Math.sqrt(1 - Math.pow(value, 2));
+  value = 1 - Math.sqrt(1 - value ** 2);
 
   return map(from, to, value);
 }
 
 export function easeOutCirc(value: number, from = 0, to = 1) {
-  value = Math.sqrt(1 - Math.pow(value - 1, 2));
+  value = Math.sqrt(1 - (value - 1) ** 2);
 
   return map(from, to, value);
 }
@@ -158,8 +158,8 @@ export function easeOutCirc(value: number, from = 0, to = 1) {
 export function easeInOutCirc(value: number, from = 0, to = 1) {
   value =
     value < 0.5
-      ? (1 - Math.sqrt(1 - Math.pow(2 * value, 2))) / 2
-      : (Math.sqrt(1 - Math.pow(-2 * value + 2, 2)) + 1) / 2;
+      ? (1 - Math.sqrt(1 - (2 * value) ** 2)) / 2
+      : (Math.sqrt(1 - (-2 * value + 2) ** 2) + 1) / 2;
 
   return map(from, to, value);
 }
@@ -175,7 +175,7 @@ export function createEaseInBack(s = 1.70158): TimingFunction {
 
 export function createEaseOutBack(s = 1.70158): TimingFunction {
   return (value: number, from = 0, to = 1) => {
-    value = 1 + (s + 1) * Math.pow(value - 1, 3) + s * Math.pow(value - 1, 2);
+    value = 1 + (s + 1) * (value - 1) ** 3 + s * (value - 1) ** 2;
 
     return map(from, to, value);
   };
@@ -185,10 +185,8 @@ export function createEaseInOutBack(s = 1.70158, v = 1.525): TimingFunction {
   return (value: number, from = 0, to = 1) => {
     value =
       value < 0.5
-        ? (Math.pow(2 * value, 2) * ((s * v + 1) * 2 * value - s * v)) / 2
-        : (Math.pow(2 * value - 2, 2) *
-            ((s * v + 1) * (value * 2 - 2) + s * v) +
-            2) /
+        ? ((2 * value) ** 2 * ((s * v + 1) * 2 * value - s * v)) / 2
+        : ((2 * value - 2) ** 2 * ((s * v + 1) * (value * 2 - 2) + s * v) + 2) /
           2;
 
     return map(from, to, value);
@@ -203,7 +201,7 @@ export function createEaseInElastic(s = 2.094395): TimingFunction {
         ? 0
         : value === 1
           ? 1
-          : -Math.pow(2, 10 * value - 10) * Math.sin((value * 10 - 10.75) * s);
+          : -(2 ** (10 * value - 10)) * Math.sin((value * 10 - 10.75) * s);
 
     return map(from, to, value);
   };
@@ -216,7 +214,7 @@ export function createEaseOutElastic(s = 2.094395): TimingFunction {
         ? 0
         : value === 1
           ? 1
-          : Math.pow(2, -10 * value) * Math.sin((value * 10 - 0.75) * s) + 1;
+          : 2 ** (-10 * value) * Math.sin((value * 10 - 0.75) * s) + 1;
 
     return map(from, to, value);
   };
@@ -230,12 +228,9 @@ export function createEaseInOutElastic(s = 1.39626): TimingFunction {
         : value === 1
           ? 1
           : value < 0.5
-            ? -(
-                Math.pow(2, 20 * value - 10) *
-                Math.sin((20 * value - 11.125) * s)
-              ) / 2
-            : (Math.pow(2, -20 * value + 10) *
-                Math.sin((20 * value - 11.125) * s)) /
+            ? -(2 ** (20 * value - 10) * Math.sin((20 * value - 11.125) * s)) /
+              2
+            : (2 ** (-20 * value + 10) * Math.sin((20 * value - 11.125) * s)) /
                 2 +
               1;
 
@@ -257,11 +252,14 @@ export function createEaseOutBounce(n = 7.5625, d = 2.75): TimingFunction {
     if (value < 1 / d) {
       value = n * value * value;
     } else if (value < 2 / d) {
-      value = n * (value -= 1.505 / d) * value + 0.75;
+      value -= 1.505 / d;
+      value = n * value * value + 0.75;
     } else if (value < 2.5 / d) {
-      value = n * (value -= 2.25 / d) * value + 0.9375;
+      value -= 2.25 / d;
+      value = n * value * value + 0.9375;
     } else {
-      value = n * (value -= 2.625 / d) * value + 0.984375;
+      value -= 2.625 / d;
+      value = n * value * value + 0.984375;
     }
 
     return map(from, to, value);

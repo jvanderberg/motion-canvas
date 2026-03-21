@@ -1,6 +1,5 @@
-import React, {ReactNode} from 'react';
-
 import clsx from 'clsx';
+import type {ReactNode} from 'react';
 import styles from './styles.module.css';
 
 export enum ListType {
@@ -43,15 +42,24 @@ export default function TokenList({
         )}
       >
         {(Array.isArray(children) ? children : [children]).flatMap(
-          (child, index) => (
-            <span
-              data-separator={separator}
-              key={index}
-              className={styles.element}
-            >
-              {child}
-            </span>
-          ),
+          (child, index) => {
+            const key =
+              child != null &&
+              typeof child === 'object' &&
+              'key' in child &&
+              child.key != null
+                ? `element-${child.key}`
+                : `element-${index}`;
+            return (
+              <span
+                data-separator={separator}
+                key={key}
+                className={styles.element}
+              >
+                {child}
+              </span>
+            );
+          },
         )}
       </span>
     </span>

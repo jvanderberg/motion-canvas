@@ -1,4 +1,4 @@
-import {Img, Txt, makeScene2D} from '@motion-canvas/2d';
+import {Img, makeScene2D, Txt} from '@motion-canvas/2d';
 import {all, createRef, createSignal, linear} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
@@ -14,7 +14,7 @@ export default makeScene2D(function* (view) {
         fill={'rgba(255, 255, 255, 0.6)'}
         fontSize={20}
         x={200}
-        text={() => 'Current Filter: ' + currentEffectText()}
+        text={() => `Current Filter: ${currentEffectText()}`}
       />
     </>,
   );

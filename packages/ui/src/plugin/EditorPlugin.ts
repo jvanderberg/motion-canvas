@@ -1,5 +1,5 @@
-import {Plugin} from '@motion-canvas/core';
-import {FunctionComponent} from 'preact';
+import type {Plugin} from '@motion-canvas/core';
+import type {FunctionComponent} from 'preact';
 
 /**
  * Properties passed to the {@link PluginTabConfig.tabComponent} and
@@ -58,9 +58,10 @@ export interface PluginInspectorConfig {
   component: FunctionComponent;
 }
 
-export interface PluginDrawFunction {
-  (ctx: CanvasRenderingContext2D, matrix: DOMMatrix): void;
-}
+export type PluginDrawFunction = (
+  ctx: CanvasRenderingContext2D,
+  matrix: DOMMatrix,
+) => void;
 
 /**
  * Configuration for a custom overlay in the editor.

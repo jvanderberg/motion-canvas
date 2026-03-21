@@ -13,8 +13,8 @@ import type {SceneMetadata} from './SceneMetadata';
 import type {Shaders} from './Shaders';
 import type {Slides} from './Slides';
 import type {Sounds} from './Sounds';
-import type {Variables} from './Variables';
 import type {TimeEvents} from './timeEvents';
+import type {Variables} from './Variables';
 
 /**
  * The constructor used when creating new scenes.

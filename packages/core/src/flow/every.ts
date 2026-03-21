@@ -1,15 +1,13 @@
 import {decorate, threadable} from '../decorators';
-import {ThreadGenerator} from '../threading';
+import type {ThreadGenerator} from '../threading';
 import {usePlayback} from '../utils';
 
-export interface EveryCallback {
-  /**
-   * A callback called by {@link EveryTimer} every N seconds.
-   *
-   * @param tick - The amount of times the timer has ticked.
-   */
-  (tick: number): void;
-}
+/**
+ * A callback called by {@link EveryTimer} every N seconds.
+ *
+ * @param tick - The amount of times the timer has ticked.
+ */
+export type EveryCallback = (tick: number) => void;
 
 export interface EveryTimer {
   /**

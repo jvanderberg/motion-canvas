@@ -1,7 +1,5 @@
-import styles from './Timeline.module.scss';
-
 import clsx from 'clsx';
-import {RefObject} from 'preact';
+import type {RefObject} from 'preact';
 import {useCallback, useEffect, useState} from 'preact/hooks';
 import {useApplication, useTimelineContext} from '../../contexts';
 import {
@@ -13,6 +11,7 @@ import {
 import {labelClipDraggingLeftSignal} from '../../signals';
 import {MouseButton} from '../../utils';
 import {DragIndicator} from '../icons';
+import styles from './Timeline.module.scss';
 
 export interface RangeSelectorProps {
   rangeRef: RefObject<HTMLDivElement>;

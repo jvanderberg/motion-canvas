@@ -14,15 +14,15 @@ describe('waitFor()', () => {
   afterAll(() => endPlayback(status));
 
   test('Framerate-independent wait duration', () => {
-    let time60;
+    let time60: number | undefined;
     const task60 = threads(function* () {
-      yield* waitFor(3.1415);
+      yield* waitFor(Math.PI);
       time60 = useTime();
     });
 
-    let time24;
+    let time24: number | undefined;
     const task24 = threads(function* () {
-      yield* waitFor(3.1415);
+      yield* waitFor(Math.PI);
       time24 = useTime();
     });
 
@@ -38,8 +38,8 @@ describe('waitFor()', () => {
       playback.frame++;
     }
 
-    expect(time60).toBeCloseTo(3.1415);
-    expect(time24).toBeCloseTo(3.1415);
+    expect(time60).toBeCloseTo(Math.PI);
+    expect(time24).toBeCloseTo(Math.PI);
   });
 
   test('Accumulated time offset', () => {

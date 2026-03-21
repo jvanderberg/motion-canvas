@@ -18,7 +18,7 @@ export function MetaFieldGroup({field, children}: MetaFieldGroupProps) {
         result += '\n';
         charCount = 0;
       }
-      result += word + ' ';
+      result += `${word} `;
       charCount += word.length + 1;
     }
 

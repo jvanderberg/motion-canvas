@@ -1,4 +1,4 @@
-import {Color, PossibleColor} from '../types';
+import {Color, type PossibleColor} from '../types';
 import {MetaField} from './MetaField';
 
 /**

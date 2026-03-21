@@ -1,8 +1,8 @@
 import {
-  Computed,
+  type Computed,
   ComputedContext,
   createSignal,
-  PromiseHandle,
+  type PromiseHandle,
 } from '../signals';
 import {createComputed} from './createComputed';
 

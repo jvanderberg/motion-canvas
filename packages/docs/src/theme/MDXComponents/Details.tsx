@@ -9,10 +9,8 @@ export default function MDXDetails(props) {
   );
   const children = <>{items.filter(item => item !== summary)}</>;
   return (
-    <>
-      <Details {...props} summary={summary} className={styles.root}>
-        {children}
-      </Details>
-    </>
+    <Details {...props} summary={summary} className={styles.root}>
+      {children}
+    </Details>
   );
 }

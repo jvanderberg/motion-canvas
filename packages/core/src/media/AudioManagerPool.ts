@@ -1,7 +1,7 @@
-import {Logger} from '../app';
-import {Sound} from '../scenes';
+import type {Logger} from '../app';
+import type {Sound} from '../scenes';
 import {AudioManager} from './AudioManager';
-import {AudioResourceManager} from './AudioResourceManager';
+import type {AudioResourceManager} from './AudioResourceManager';
 
 export class AudioManagerPool {
   private readonly context = new AudioContext();
@@ -33,16 +33,22 @@ export class AudioManagerPool {
 
   public setMuted(muted: boolean) {
     this.muted = muted;
-    this.managers.forEach(manager => manager.setMuted(muted));
+    this.managers.forEach(manager => {
+      manager.setMuted(muted);
+    });
   }
 
   public setVolume(volume: number) {
     this.volume = volume;
-    this.managers.forEach(manager => manager.setVolume(volume));
+    this.managers.forEach(manager => {
+      manager.setVolume(volume);
+    });
   }
 
   public setTime(time: number) {
-    this.managers.forEach(manager => manager.setTime(time));
+    this.managers.forEach(manager => {
+      manager.setTime(time);
+    });
   }
 
   public async setPaused(paused: boolean) {

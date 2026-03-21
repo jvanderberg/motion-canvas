@@ -9,7 +9,7 @@ import {PlaybackManager, PlaybackState} from './PlaybackManager';
 import {PlaybackStatus} from './PlaybackStatus';
 import type {Project} from './Project';
 import {SharedWebGLContext} from './SharedWebGLContext';
-import {Stage, StageSettings} from './Stage';
+import {Stage, type StageSettings} from './Stage';
 import {TimeEstimator} from './TimeEstimator';
 
 export interface RendererSettings extends StageSettings {

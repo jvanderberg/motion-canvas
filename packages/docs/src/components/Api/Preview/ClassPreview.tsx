@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Token from '@site/src/components/Api/Code/Token';
 import TokenList, {ListType} from '@site/src/components/Api/Code/TokenList';
 import FlagsPreview from '@site/src/components/Api/Preview/FlagsPreview';
@@ -38,8 +36,8 @@ export default function ClassPreview({
         <>
           <Token type="keyword">extends </Token>
           <TokenList>
-            {reflection.extendedTypes.map((type, index) => (
-              <Type key={index} type={type} />
+            {reflection.extendedTypes.map(type => (
+              <Type key={JSON.stringify(type)} type={type} />
             ))}
           </TokenList>
         </>
@@ -48,8 +46,8 @@ export default function ClassPreview({
         <>
           <Token type="keyword">implements </Token>
           <TokenList>
-            {reflection.implementedTypes.map((type, index) => (
-              <Type key={index} type={type} />
+            {reflection.implementedTypes.map(type => (
+              <Type key={JSON.stringify(type)} type={type} />
             ))}
           </TokenList>
         </>

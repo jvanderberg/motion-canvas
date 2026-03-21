@@ -1,6 +1,6 @@
+import type {IncomingMessage, ServerResponse} from 'node:http';
 import followRedirects from 'follow-redirects';
-import {IncomingMessage, ServerResponse} from 'http';
-import {Connect, Plugin} from 'vite';
+import type {Connect, Plugin} from 'vite';
 
 /**
  * Configuration used by the Proxy plugin
@@ -66,8 +66,8 @@ function setupEnvVarsForProxy(
 ) {
   // Define Keys for Env Var
   const prefix = 'VITE_MC_PROXY_';
-  const isEnabledKey = prefix + 'ENABLED';
-  const allowList = prefix + 'ALLOW_LIST';
+  const isEnabledKey = `${prefix}ENABLED`;
+  const allowList = `${prefix}ALLOW_LIST`;
 
   if (config === true) {
     config = {}; // Use Default values
@@ -268,7 +268,7 @@ async function tryGetResource(
   });
 
   if (!result.statusCode || result.statusCode >= 300) {
-    throw 'Unexpected Status: ' + (result.statusCode ?? 'NO_STATUS');
+    throw `Unexpected Status: ${result.statusCode ?? 'NO_STATUS'}`;
   }
 
   const contentType = result.headers['content-type'];
@@ -287,7 +287,7 @@ async function tryGetResource(
       config.allowedMimeTypes ?? [],
     )
   ) {
-    throw 'Proxied response has blocked content-type: ' + contentType;
+    throw `Proxied response has blocked content-type: ${contentType}`;
   }
 
   // Prepare Response

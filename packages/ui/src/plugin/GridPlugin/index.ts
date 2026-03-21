@@ -37,10 +37,8 @@ export default makeEditorPlugin({
           }
 
           ctx.save();
-          const scale = Math.pow(
-            2,
-            Math.log2(state.zoom) - Math.floor(Math.log2(state.zoom)),
-          );
+          const scale =
+            2 ** (Math.log2(state.zoom) - Math.floor(Math.log2(state.zoom)));
           ctx.translate(
             ctx.canvas.width / 2 + (state.x % (GRID_SIZE * scale)),
             ctx.canvas.height / 2 + (state.y % (GRID_SIZE * scale)),

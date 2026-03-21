@@ -1,11 +1,8 @@
-import React from 'react';
-import styles from './styles.module.css';
-
 import Link from '@docusaurus/Link';
 import YouTubeVideo from '@site/src/components/YouTubeVideo';
-import CodeBlock from '@theme/CodeBlock';
-
 import UI from '@site/static/img/ui.svg';
+import CodeBlock from '@theme/CodeBlock';
+import styles from './styles.module.css';
 
 const CodeSample = `export default makeScene2D(function* (view) {
   const circle = createRef<Circle>();
@@ -57,7 +54,7 @@ export default function HomepageFeatures(): JSX.Element {
         </p>
         <p>
           Powered by{' '}
-          <a href="https://vitejs.dev/" target="_blank">
+          <a href="https://vitejs.dev/" target="_blank" rel="noopener">
             Vite
           </a>
           , a real-time preview of your animation automatically updates upon any
@@ -68,6 +65,7 @@ export default function HomepageFeatures(): JSX.Element {
             className="button button--outline button--lg"
             href="/editor/quickstart"
             target="_blank"
+            rel="noopener"
           >
             Try the Editor
           </a>
@@ -111,6 +109,7 @@ export default function HomepageFeatures(): JSX.Element {
             className="button button--outline button--lg"
             href="https://github.com/motion-canvas/examples"
             target="_blank"
+            rel="noopener"
           >
             Video Source Code
           </a>

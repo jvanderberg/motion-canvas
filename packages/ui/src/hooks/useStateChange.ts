@@ -1,4 +1,4 @@
-import {Inputs, useLayoutEffect, useRef} from 'preact/hooks';
+import {type Inputs, useLayoutEffect, useRef} from 'preact/hooks';
 
 export function useStateChange<T extends Inputs>(
   onChange: (prev: T) => void,

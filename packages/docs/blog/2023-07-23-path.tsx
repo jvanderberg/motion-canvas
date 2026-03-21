@@ -1,6 +1,7 @@
 import {makeScene2D, Path} from '@motion-canvas/2d';
 
 export default makeScene2D(function* (view) {
+  yield;
   view.add(
     <Path
       scale={8}

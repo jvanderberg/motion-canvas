@@ -2,8 +2,7 @@ import {ApiProvider} from '@site/src/contexts/api';
 import {FiltersProvider} from '@site/src/contexts/filters';
 import api from '@site/src/generated/api';
 import sidebar from '@site/src/generated/sidebar';
-import DocPage, {Props} from '@theme/DocPage';
-import React from 'react';
+import DocPage, {type Props} from '@theme/DocPage';
 
 export default function ApiPage(props: Props) {
   return (

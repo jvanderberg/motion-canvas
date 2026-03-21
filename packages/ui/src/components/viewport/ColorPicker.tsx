@@ -5,7 +5,7 @@ import {ButtonCheckbox} from '../controls/ButtonCheckbox';
 import {Colorize} from '../icons';
 
 export function ColorPicker() {
-  return typeof EyeDropper === 'function' ? <ColorPickerImpl /> : <></>;
+  return typeof EyeDropper === 'function' ? <ColorPickerImpl /> : null;
 }
 
 function ColorPickerImpl() {

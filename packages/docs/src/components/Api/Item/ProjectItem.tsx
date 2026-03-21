@@ -1,7 +1,6 @@
 import Link from '@docusaurus/Link';
 import {useApiLookup} from '@site/src/contexts/api';
 import clsx from 'clsx';
-import React from 'react';
 import type {JSONOutput} from 'typedoc';
 import styles from './styles.module.css';
 

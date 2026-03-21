@@ -2,13 +2,7 @@ import useIsBrowser from '@docusaurus/useIsBrowser';
 import Comment from '@site/src/components/Api/Comment';
 import {useUrlLookup} from '@site/src/contexts/api';
 import clsx from 'clsx';
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import {type ReactNode, useCallback, useEffect, useRef, useState} from 'react';
 import styles from './styles.module.css';
 
 const WIDTH = 480 + 16;
@@ -85,7 +79,7 @@ export default function Tooltip({children}: {children: ReactNode}) {
       document.removeEventListener('blur', onLeave, true);
       document.removeEventListener('scroll', updatePosition);
     };
-  }, [isBrowser]);
+  }, [isBrowser, updatePosition, urlLookup]);
 
   useEffect(() => {
     updatePosition();

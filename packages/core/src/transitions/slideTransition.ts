@@ -1,6 +1,6 @@
 import {all} from '../flow';
-import {ThreadGenerator} from '../threading';
-import {Direction, Origin, Vector2} from '../types';
+import type {ThreadGenerator} from '../threading';
+import {Direction, type Origin, Vector2} from '../types';
 import {useScene} from '../utils';
 import {useTransition} from './useTransition';
 

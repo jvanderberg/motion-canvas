@@ -1,5 +1,5 @@
-import {Logger} from '../app';
-import {Sound} from '../scenes';
+import type {Logger} from '../app';
+import type {Sound} from '../scenes';
 import {useLogger} from '../utils';
 
 export class AudioManager {
@@ -13,7 +13,7 @@ export class AudioManager {
   private sourceNode?: MediaElementAudioSourceNode;
 
   public constructor(
-    private readonly logger: Logger,
+    readonly _logger: Logger,
     private readonly context: AudioContext,
   ) {
     if (import.meta.hot) {
@@ -39,7 +39,7 @@ export class AudioManager {
       this.gainNode.connect(this.context.destination);
     }
 
-    this.gainNode.gain.value = Math.pow(10, (sound.gain ?? 0) / 10);
+    this.gainNode.gain.value = 10 ** ((sound.gain ?? 0) / 10);
     this.setPlaybackRate(sound.realPlaybackRate, true);
   }
 

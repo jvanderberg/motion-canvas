@@ -28,7 +28,7 @@ export function compareVersions(v1: string, v2: string): number {
 
 function getNumericPart(part: string): string | number {
   const numPart = parseInt(part, 10);
-  return isNaN(numPart) ? part : numPart;
+  return Number.isNaN(numPart) ? part : numPart;
 }
 
 function getPreReleasePart(part: string): string {

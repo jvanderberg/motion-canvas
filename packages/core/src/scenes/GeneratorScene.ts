@@ -1,37 +1,35 @@
-import {Logger, PlaybackStatus} from '../app';
+import type {Logger, PlaybackStatus} from '../app';
 import {decorate, threadable} from '../decorators';
 import {EventDispatcher, ValueDispatcher} from '../events';
-import {DependencyContext, SignalValue} from '../signals';
+import {DependencyContext, type SignalValue} from '../signals';
 import {
-  Thread,
-  ThreadGenerator,
   isPromisable,
   isPromise,
+  type Thread,
+  type ThreadGenerator,
   threads,
 } from '../threading';
-import {Vector2} from '../types';
+import type {Vector2} from '../types';
 import {endPlayback, endScene, startPlayback, startScene} from '../utils';
 import {LifecycleEvents} from './LifecycleEvents';
 import {Random} from './Random';
-import {
+import type {
   CachedSceneData,
   FullSceneDescription,
   Scene,
   SceneDescriptionReload,
   SceneRenderEvent,
 } from './Scene';
-import {SceneMetadata} from './SceneMetadata';
+import type {SceneMetadata} from './SceneMetadata';
 import {SceneState} from './SceneState';
 import {Shaders} from './Shaders';
 import {Slides} from './Slides';
 import {Sounds} from './Sounds';
-import {Threadable} from './Threadable';
+import type {Threadable} from './Threadable';
+import type {TimeEvents} from './timeEvents';
 import {Variables} from './Variables';
-import {TimeEvents} from './timeEvents';
 
-export interface ThreadGeneratorFactory<T> {
-  (view: T): ThreadGenerator;
-}
+export type ThreadGeneratorFactory<T> = (view: T) => ThreadGenerator;
 
 /**
  * The default implementation of the {@link Scene} interface.
@@ -124,7 +122,6 @@ export abstract class GeneratorScene<T>
   private runner: ThreadGenerator | null = null;
   private state: SceneState = SceneState.Initial;
   private cached = false;
-  private counters: Record<string, number> = {};
   private size: Vector2;
 
   public constructor(
@@ -283,7 +280,6 @@ export abstract class GeneratorScene<T>
   }
 
   public async reset(previousScene: Scene | null = null) {
-    this.counters = {};
     this.previousScene = previousScene;
     this.previousOnTop = false;
     this.random = new Random(this.meta.seed.get());

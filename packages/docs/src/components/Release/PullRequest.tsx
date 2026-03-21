@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './styles.module.css';
 
 export interface PullRequestProps {
@@ -12,6 +11,7 @@ export default function PullRequest({id}: PullRequestProps) {
       title={`Pull request #${id}`}
       href={`https://github.com/motion-canvas/motion-canvas/pull/${id}`}
       target="_blank"
+      rel="noopener"
     >
       <small>#{id}</small>
     </a>

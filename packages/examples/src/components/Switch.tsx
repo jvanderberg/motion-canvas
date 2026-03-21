@@ -1,22 +1,22 @@
 import {
   Circle,
-  Node,
-  NodeProps,
-  Rect,
   colorSignal,
   initial,
+  Node,
+  type NodeProps,
+  Rect,
   signal,
 } from '@motion-canvas/2d';
 import {
-  Color,
-  ColorSignal,
-  PossibleColor,
-  SignalValue,
-  SimpleSignal,
   all,
+  Color,
+  type ColorSignal,
   createRef,
   createSignal,
   easeInOutCubic,
+  type PossibleColor,
+  type SignalValue,
+  type SimpleSignal,
   tween,
 } from '@motion-canvas/core';
 

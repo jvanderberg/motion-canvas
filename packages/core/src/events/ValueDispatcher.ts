@@ -1,6 +1,6 @@
 import {
   EventDispatcherBase,
-  EventHandler,
+  type EventHandler,
   Subscribable,
 } from './EventDispatcherBase';
 

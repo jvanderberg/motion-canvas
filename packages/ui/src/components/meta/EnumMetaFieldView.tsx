@@ -10,14 +10,12 @@ export interface EnumMetaFieldViewProps {
 export function EnumMetaFieldView({field}: EnumMetaFieldViewProps) {
   const value = useSubscribableValue(field.onChanged);
   return (
-    <>
-      <MetaFieldGroup field={field}>
-        <Select
-          options={field.options}
-          value={value}
-          onChange={newValue => field.set(newValue)}
-        />
-      </MetaFieldGroup>
-    </>
+    <MetaFieldGroup field={field}>
+      <Select
+        options={field.options}
+        value={value}
+        onChange={newValue => field.set(newValue)}
+      />
+    </MetaFieldGroup>
   );
 }

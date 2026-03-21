@@ -1,4 +1,4 @@
-import {Camera, Circle, Grid, Node, Rect, makeScene2D} from '@motion-canvas/2d';
+import {Camera, Circle, Grid, makeScene2D, Node, Rect} from '@motion-canvas/2d';
 import {all, createRef} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {

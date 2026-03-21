@@ -1,8 +1,6 @@
-import {EventDispatcherBase, Subscribable} from './EventDispatcherBase';
+import {EventDispatcherBase, type Subscribable} from './EventDispatcherBase';
 
-export interface AsyncEventHandler<T> {
-  (value: T): Promise<void>;
-}
+export type AsyncEventHandler<T> = (value: T) => Promise<void>;
 
 /**
  * Dispatches an asynchronous {@link SubscribableEvent}.

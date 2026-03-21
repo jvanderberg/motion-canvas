@@ -29,7 +29,7 @@ export function RangeMetaFieldView({field}: RangeMetaFieldViewProps) {
         max={endFrame}
         value={startFrame}
         onChange={start => {
-          if (!start || isNaN(start)) {
+          if (!start || Number.isNaN(start)) {
             start = 0;
           }
           field.update(start, endFrame, duration, fps);
@@ -41,7 +41,7 @@ export function RangeMetaFieldView({field}: RangeMetaFieldViewProps) {
         placeholder="end"
         value={endFrame >= Infinity ? null : endFrame}
         onChange={end => {
-          if (!end || isNaN(end)) {
+          if (!end || Number.isNaN(end)) {
             end = Infinity;
           }
           field.update(startFrame, end, duration, fps);

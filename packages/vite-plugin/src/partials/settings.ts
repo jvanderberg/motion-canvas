@@ -1,11 +1,11 @@
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
-import {Plugin} from 'vite';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import type {Plugin} from 'vite';
 
 export function settingsPlugin(): Plugin {
   const settingsId = 'virtual:settings.meta';
-  const resolvedSettingsId = '\0' + settingsId;
+  const resolvedSettingsId = `\0${settingsId}`;
   const settingsPath = path.resolve(
     os.homedir(),
     '.motion-canvas/settings.json',

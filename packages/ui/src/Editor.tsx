@@ -1,5 +1,4 @@
 import {PresenterState} from '@motion-canvas/core';
-import styles from './Editor.module.scss';
 import {Console} from './components/console';
 import {Footer} from './components/footer';
 import {ElementSwitch, Navigation, ResizeableLayout} from './components/layout';
@@ -8,6 +7,7 @@ import {Settings, Threads, VideoSettings} from './components/sidebar';
 import {Timeline} from './components/timeline';
 import {Viewport} from './components/viewport';
 import {usePanels} from './contexts';
+import styles from './Editor.module.scss';
 import {usePresenterState} from './hooks';
 import {EditorPanel} from './signals';
 

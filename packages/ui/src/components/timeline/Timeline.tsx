@@ -1,11 +1,9 @@
-import styles from './Timeline.module.scss';
-
 import {useSignal, useSignalEffect} from '@preact/signals';
 import clsx from 'clsx';
 import {useLayoutEffect, useMemo, useRef} from 'preact/hooks';
 import {
   TimelineContextProvider,
-  TimelineState,
+  type TimelineState,
   useApplication,
 } from '../../contexts';
 import {
@@ -20,13 +18,14 @@ import {
 } from '../../hooks';
 import {useShortcut} from '../../hooks/useShortcut';
 import {labelClipDraggingLeftSignal} from '../../signals';
-import {MouseButton, MouseMask, clamp} from '../../utils';
+import {clamp, MouseButton, MouseMask} from '../../utils';
 import {borderHighlight} from '../animations';
 import {AudioTrack} from './AudioTrack';
 import {LabelTrack} from './LabelTrack';
 import {Playhead} from './Playhead';
 import {RangeSelector} from './RangeSelector';
 import {SceneTrack} from './SceneTrack';
+import styles from './Timeline.module.scss';
 import {Timestamps} from './Timestamps';
 
 const ZOOM_SPEED = 0.1;
@@ -79,10 +78,7 @@ export function Timeline() {
   );
 
   const state = useMemo<TimelineState>(() => {
-    const density = Math.pow(
-      2,
-      Math.round(Math.log2(duration / sizes.playableLength)),
-    );
+    const density = 2 ** Math.round(Math.log2(duration / sizes.playableLength));
     const segmentDensity = Math.floor(TIMESTAMP_SPACING * density);
     const clampedSegmentDensity = Math.max(1, segmentDensity);
     const relativeOffset = offset - sizes.paddingLeft;
@@ -121,7 +117,7 @@ export function Timeline() {
       if (prevWidth !== 0 && rect.width !== 0) {
         newScale *= prevWidth / rect.width;
       }
-      if (!isNaN(newScale) && duration > 0) {
+      if (!Number.isNaN(newScale) && duration > 0) {
         setScale(clamp(ZOOM_MIN, zoomMax, newScale));
       }
     },
@@ -230,10 +226,10 @@ export function Timeline() {
             );
 
             containerRef.current.scrollLeft = newOffset;
-            if (!isNaN(newScale)) {
+            if (!Number.isNaN(newScale)) {
               setScale(newScale);
             }
-            if (!isNaN(newOffset)) {
+            if (!Number.isNaN(newOffset)) {
               setOffset(newOffset);
             }
             playheadRef.current.style.left = `${

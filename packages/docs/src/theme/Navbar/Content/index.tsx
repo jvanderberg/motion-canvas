@@ -10,14 +10,13 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarItem from '@theme/NavbarItem';
 import SearchBar from '@theme/SearchBar';
-import React from 'react';
 import styles from './styles.module.css';
 
 function NavbarItems({items}) {
   return (
     <>
-      {items.map((item, i) => (
-        <NavbarItem {...item} key={i} />
+      {items.map(item => (
+        <NavbarItem {...item} key={item.label ?? item.to} />
       ))}
     </>
   );

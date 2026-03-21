@@ -4,7 +4,11 @@
  * @param duration - The duration in seconds.
  */
 export function formatDuration(duration: number) {
-  if (duration === Infinity || duration === -Infinity || isNaN(duration)) {
+  if (
+    duration === Infinity ||
+    duration === -Infinity ||
+    Number.isNaN(duration)
+  ) {
     return '??:??:??';
   }
 

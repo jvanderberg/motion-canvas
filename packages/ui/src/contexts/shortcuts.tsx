@@ -1,4 +1,4 @@
-import {ComponentChildren, createContext} from 'preact';
+import {type ComponentChildren, createContext} from 'preact';
 import {useContext, useState} from 'preact/hooks';
 
 export type Shortcut = {

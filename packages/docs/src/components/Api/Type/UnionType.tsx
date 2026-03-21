@@ -1,5 +1,3 @@
-import React from 'react';
-
 import TokenList, {
   ListType,
   Separator,
@@ -10,8 +8,8 @@ import type {JSONOutput} from 'typedoc';
 export default function UnionType({type}: {type: JSONOutput.UnionType}) {
   return (
     <TokenList type={ListType.Parentheses} separator={Separator.Pipe}>
-      {type.types.map((item, index) => (
-        <Type key={index} type={item} />
+      {type.types.map(item => (
+        <Type key={JSON.stringify(item)} type={item} />
       ))}
     </TokenList>
   );

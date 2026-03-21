@@ -1,5 +1,5 @@
-import {execSync, spawn} from 'child_process';
-import {platform} from 'os';
+import {execSync, spawn} from 'node:child_process';
+import {platform} from 'node:os';
 
 export function openInExplorer(file: string) {
   let command: string | null = null;

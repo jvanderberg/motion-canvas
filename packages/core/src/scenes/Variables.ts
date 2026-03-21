@@ -1,11 +1,11 @@
-import {createSignal, SimpleSignal} from '../signals';
+import {createSignal, type SimpleSignal} from '../signals';
 import type {Scene} from './Scene';
 
 export class Variables {
   private signals: {[key: string]: SimpleSignal<any>} = {};
   private variables: Record<string, unknown> = {};
 
-  public constructor(private readonly scene: Scene) {
+  public constructor(readonly scene: Scene) {
     scene.onReset.subscribe(this.handleReset);
   }
 
@@ -26,11 +26,11 @@ export class Variables {
    */
   public updateSignals(variables: Record<string, unknown>) {
     this.variables = variables;
-    Object.keys(variables).map(variableName => {
+    for (const variableName of Object.keys(variables)) {
       if (variableName in this.signals) {
         this.signals[variableName](variables[variableName]);
       }
-    });
+    }
   }
 
   /**

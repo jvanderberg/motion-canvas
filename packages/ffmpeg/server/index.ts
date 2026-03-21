@@ -1,4 +1,8 @@
-import {Plugin, PLUGIN_OPTIONS, PluginConfig} from '@motion-canvas/vite-plugin';
+import {
+  type Plugin,
+  PLUGIN_OPTIONS,
+  type PluginConfig,
+} from '@motion-canvas/vite-plugin';
 import {FFmpegBridge} from './FFmpegBridge';
 
 export default (): Plugin => {

@@ -3,7 +3,7 @@ import type {
   Subscribable,
   SubscribableValueEvent,
 } from '@motion-canvas/core';
-import {Inputs, useEffect, useState} from 'preact/hooks';
+import {type Inputs, useEffect, useState} from 'preact/hooks';
 
 export function useSubscribable<TValue, THandler extends EventHandler<TValue>>(
   event: Subscribable<TValue, THandler>,
@@ -17,6 +17,6 @@ export function useSubscribableValue<TValue>(
   value: SubscribableValueEvent<TValue>,
 ) {
   const [state, setState] = useState(value?.current);
-  useEffect(() => value && value.subscribe(setState), [value]);
+  useEffect(() => value?.subscribe(setState), [value]);
   return state;
 }

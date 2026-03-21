@@ -8,7 +8,6 @@ import Preview from '@site/src/components/Api/Preview';
 import Signatures from '@site/src/components/Api/Signatures';
 import ReferenceType from '@site/src/components/Api/Type/ReferenceType';
 import TypeParameters from '@site/src/components/Api/TypeParameters';
-import React from 'react';
 import type {JSONOutput} from 'typedoc';
 
 export default function ClassItem({

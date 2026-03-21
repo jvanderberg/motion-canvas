@@ -1,8 +1,8 @@
-import path from 'path';
+import path from 'node:path';
 import type {Plugin} from 'vite';
 import {
-  CorsProxyPluginConfig,
   assetsPlugin,
+  type CorsProxyPluginConfig,
   cliRemotePlugin,
   corsProxyPlugin,
   editorPlugin,
@@ -13,7 +13,12 @@ import {
   settingsPlugin,
   webglPlugin,
 } from './partials';
-import {PLUGIN_OPTIONS, PluginConfig, PluginOptions, isPlugin} from './plugins';
+import {
+  isPlugin,
+  PLUGIN_OPTIONS,
+  type PluginConfig,
+  type PluginOptions,
+} from './plugins';
 import {getProjects} from './utils';
 
 export interface MotionCanvasPluginConfig {

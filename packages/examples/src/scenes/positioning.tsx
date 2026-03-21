@@ -1,5 +1,5 @@
-import {Circle, Grid, Line, Node, makeScene2D} from '@motion-canvas/2d';
-import {Vector2, all, createRef, createSignal} from '@motion-canvas/core';
+import {Circle, Grid, Line, makeScene2D, Node} from '@motion-canvas/2d';
+import {all, createRef, createSignal, Vector2} from '@motion-canvas/core';
 
 const RED = '#ff6470';
 const GREEN = '#99C47A';

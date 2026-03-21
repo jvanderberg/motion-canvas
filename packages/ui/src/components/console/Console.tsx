@@ -1,6 +1,4 @@
-import styles from './Console.module.scss';
-
-import {LogLevel, capitalize} from '@motion-canvas/core';
+import {capitalize, LogLevel} from '@motion-canvas/core';
 import clsx from 'clsx';
 import {useLayoutEffect, useRef} from 'preact/hooks';
 import {useApplication} from '../../contexts';
@@ -8,6 +6,7 @@ import {useStorage, useSubscribableValue} from '../../hooks';
 import {IconButton, Pill} from '../controls';
 import {Clear} from '../icons';
 import {Pane} from '../tabs';
+import styles from './Console.module.scss';
 import {Log} from './Log';
 
 const LOG_LEVELS: Record<string, boolean> = {
@@ -63,7 +62,7 @@ export function Console() {
         )}
       >
         {logs.map(log => (
-          <Log payload={log} />
+          <Log key={`${log.level}-${log.message}`} payload={log} />
         ))}
         <div ref={anchor} className={styles.anchor} />
       </div>

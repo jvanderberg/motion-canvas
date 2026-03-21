@@ -1,6 +1,5 @@
-import React, {ReactNode, useLayoutEffect, useRef} from 'react';
-
 import clsx from 'clsx';
+import {type ReactNode, useLayoutEffect, useRef} from 'react';
 import styles from './styles.module.css';
 
 function compare(a: number, b: number) {

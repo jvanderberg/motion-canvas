@@ -32,6 +32,7 @@ export function Versions() {
           target="_blank"
           title="See what's new"
           className={clsx(styles.link, styles.main)}
+          rel="noopener"
         >
           UPDATE AVAILABLE
         </a>

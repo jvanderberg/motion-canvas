@@ -1,6 +1,6 @@
 import {clamp} from '../tweening';
 import {MetaField} from './MetaField';
-import {MetaOption} from './MetaOption';
+import type {MetaOption} from './MetaOption';
 
 /**
  * Represents a number stored in a meta file.
@@ -15,7 +15,7 @@ export class NumberMetaField extends MetaField<any, number> {
 
   public parse(value: any): number {
     let parsed = parseFloat(value);
-    if (isNaN(parsed)) {
+    if (Number.isNaN(parsed)) {
       parsed = this.initial;
     }
 

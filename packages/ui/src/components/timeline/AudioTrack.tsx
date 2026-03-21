@@ -1,10 +1,9 @@
-import styles from './Timeline.module.scss';
-
 import clsx from 'clsx';
 import {useLayoutEffect, useMemo, useRef, useState} from 'preact/hooks';
 import {useApplication, useTimelineContext} from '../../contexts';
 import {useKeyHold, useSharedSettings, useSubscribableValue} from '../../hooks';
 import {MouseButton} from '../../utils';
+import styles from './Timeline.module.scss';
 
 const HEIGHT = 48;
 

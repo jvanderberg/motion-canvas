@@ -1,5 +1,5 @@
-import {Logger} from './Logger';
 import includeWithoutPreprocessor from './__logs__/include-without-preprocessor.md';
+import type {Logger} from './Logger';
 
 const SOURCE_URL_REGEX = /^\/\/# sourceURL=(.*)$/gm;
 const INFO_LOG_REGEX = /ERROR: \d+:(\d+): (.*)/g;
@@ -165,13 +165,13 @@ function logGlslError(logger: Logger, log: string | null, source: string) {
   }
 
   let logged = false;
-  let result;
-  while ((result = INFO_LOG_REGEX.exec(log))) {
+  let result: RegExpExecArray | null = INFO_LOG_REGEX.exec(log);
+  while (result) {
     const [, line, message] = result;
     let column = 0;
     const match = message.match(INFO_TOKEN_REGEX);
     if (match) {
-      const tokenLine = source.split('\n')[parseInt(line)! - 1];
+      const tokenLine = source.split('\n')[parseInt(line, 10)! - 1];
       const index = tokenLine.indexOf(match[1]!);
       if (index !== -1) {
         column = index;
@@ -197,6 +197,7 @@ function logGlslError(logger: Logger, log: string | null, source: string) {
       message: `Shader compilation error: ${message}`,
       stack: fakeStackTrace(sourceUrl, line, column),
     });
+    result = INFO_LOG_REGEX.exec(log);
   }
 
   if (!logged) {

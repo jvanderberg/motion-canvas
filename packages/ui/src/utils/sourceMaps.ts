@@ -60,12 +60,12 @@ export async function resolveStackTrace(
     const [, functionName, uri, line, column] = match;
     const parsed = new URL(uri);
     const file = parsed.pathname;
-    const directory = file.split('/').slice(0, -1).join('/') + '/';
+    const directory = `${file.split('/').slice(0, -1).join('/')}/`;
     const entry: StackTraceEntry = {
       file,
       uri,
-      line: parseInt(line),
-      column: parseInt(column),
+      line: parseInt(line, 10),
+      column: parseInt(column, 10),
       isExternal: ExternalFileRegex.test(file),
       functionName: functionName?.trim(),
     };
@@ -92,7 +92,7 @@ export async function resolveStackTrace(
             return entry;
           }
         }
-      } catch (e) {
+      } catch (_e) {
         entry.isExternal = true;
       }
     }

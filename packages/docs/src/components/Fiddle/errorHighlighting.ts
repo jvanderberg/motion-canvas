@@ -1,6 +1,6 @@
 import {syntaxTree} from '@codemirror/language';
 import {
-  EditorState,
+  type EditorState,
   RangeSet,
   RangeValue,
   StateEffect,
@@ -8,10 +8,10 @@ import {
 } from '@codemirror/state';
 import {
   Decoration,
-  DecorationSet,
+  type DecorationSet,
   EditorView,
-  Tooltip,
   hoverTooltip,
+  type Tooltip,
 } from '@codemirror/view';
 
 const ClearErrors = StateEffect.define();

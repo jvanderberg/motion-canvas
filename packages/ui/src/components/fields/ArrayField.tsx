@@ -15,7 +15,7 @@ export function ArrayField({value}: NumberFieldProps) {
   return value.length > 0 ? (
     <FieldSet nested header={header}>
       {value.map(item => (
-        <AutoField value={item} />
+        <AutoField key={JSON.stringify(item)} value={item} />
       ))}
     </FieldSet>
   ) : (

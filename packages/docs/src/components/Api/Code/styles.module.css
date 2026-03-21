@@ -1,26 +1,28 @@
 .list {
+  display: inline;
 }
 .elements {
+  display: inline;
 }
 
 .elements:not(.wrap) > .element:not(:last-child)::after {
   content: attr(data-separator);
 }
 .elements.wrap:not(.left) > .element::after {
-  content: attr(data-separator) '\a';
+  content: attr(data-separator) "\a";
 }
 .elements.wrap.left > .element::before {
-  content: '\a' attr(data-separator);
+  content: "\a" attr(data-separator);
 }
 
 .elements.wrap:not(.left)::before {
-  content: '\a';
+  content: "\a";
 }
 .elements.wrap:not(.left)::after {
-  content: '';
+  content: "";
 }
 .elements.wrap.left::after {
-  content: '\a';
+  content: "\a";
 }
 
 .wrap .elements.wrap::after {
@@ -41,28 +43,28 @@
 }
 
 .angle::before {
-  content: '<';
+  content: "<";
 }
 .angle::after {
-  content: '>';
+  content: ">";
 }
 .curly::before {
-  content: '{';
+  content: "{";
 }
 .curly::after {
-  content: '}';
+  content: "}";
 }
 .square::before {
-  content: '[';
+  content: "[";
 }
 .square::after {
-  content: ']';
+  content: "]";
 }
 .parentheses::before {
-  content: '(';
+  content: "(";
 }
 .parentheses::after {
-  content: ')';
+  content: ")";
 }
 
 .codeBlockContainer hr {
@@ -83,7 +85,8 @@
   border-left: var(--ifm-alert-border-left-width) solid
     var(--ifm-color-emphasis-400);
   padding-left: calc(
-    var(--ifm-pre-padding) - var(--ifm-alert-border-left-width)
+    var(--ifm-pre-padding) -
+    var(--ifm-alert-border-left-width)
   );
   border-radius: var(--ifm-pre-border-radius);
 }

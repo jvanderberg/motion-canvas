@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './styles.module.css';
 
 export interface ContributorProps {
@@ -12,6 +11,7 @@ export default function Contributor({name}: ContributorProps) {
       title={name}
       href={`https://github.com/${name}`}
       target="_blank"
+      rel="noopener"
     >
       <img
         loading="lazy"

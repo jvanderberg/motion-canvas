@@ -1,5 +1,5 @@
 import {Code, makeScene2D} from '@motion-canvas/2d';
-import {DEFAULT, all, createRef, waitFor} from '@motion-canvas/core';
+import {all, createRef, DEFAULT, waitFor} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
   const code = createRef<Code>();

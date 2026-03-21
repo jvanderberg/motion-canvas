@@ -40,7 +40,5 @@ export function SceneGroup({scene}: SceneGroupProps) {
         />
       ))}
     </ControlledExpandable>
-  ) : (
-    <></>
-  );
+  ) : null;
 }

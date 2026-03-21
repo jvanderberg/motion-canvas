@@ -1,5 +1,5 @@
 import {EventDispatcher} from '../events';
-import {Scene, SceneRenderEvent} from './Scene';
+import {type Scene, SceneRenderEvent} from './Scene';
 
 /**
  * Lifecycle events for {@link Scene} that are cleared on every reset.

@@ -1,6 +1,6 @@
-import {Logger} from '../app';
+import type {Logger} from '../app';
 import {ValueDispatcher} from '../events';
-import {AudioData, EMPTY_AUDIO_DATA} from './AudioData';
+import {type AudioData, EMPTY_AUDIO_DATA} from './AudioData';
 
 export class AudioResourceManager {
   private readonly context = new AudioContext();
@@ -76,7 +76,7 @@ export class AudioResource {
     let audioBuffer: AudioBuffer;
     try {
       audioBuffer = await this.decodeAudioData(rawBuffer);
-    } catch (e) {
+    } catch (_e) {
       return;
     }
 

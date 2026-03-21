@@ -1,5 +1,3 @@
-import styles from './PresentationControls.module.scss';
-
 import {useCallback} from 'preact/hooks';
 import {useApplication} from '../../contexts';
 import {useDocumentEvent, useSubscribableValue} from '../../hooks';
@@ -12,6 +10,7 @@ import {
   SkipNext,
   SkipPrevious,
 } from '../icons';
+import styles from './PresentationControls.module.scss';
 
 export function PresentationControls() {
   const {presenter} = useApplication();

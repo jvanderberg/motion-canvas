@@ -1,19 +1,19 @@
 import {
-  Signal,
-  SignalValue,
-  Vector2Signal,
+  type Signal,
+  type SignalValue,
+  type Vector2Signal,
   Vector2SignalContext,
 } from '../signals';
 import {arcLerp} from '../tweening';
 import {
-  InterpolationFunction,
   clamp,
+  type InterpolationFunction,
   map,
 } from '../tweening/interpolationFunctions';
 import {DEG2RAD, RAD2DEG} from '../utils';
-import {Matrix2D, PossibleMatrix2D} from './Matrix2D';
+import {Matrix2D, type PossibleMatrix2D} from './Matrix2D';
 import {Direction, Origin} from './Origin';
-import {EPSILON, Type, WebGLConvertible} from './Type';
+import {EPSILON, type Type, type WebGLConvertible} from './Type';
 
 export type SerializedVector2<T = number> = {
   x: T;
@@ -87,8 +87,8 @@ export class Vector2 implements Type, WebGLConvertible {
   }
 
   public static lerp(from: Vector2, to: Vector2, value: number | Vector2) {
-    let valueX;
-    let valueY;
+    let valueX: number;
+    let valueY: number;
 
     if (typeof value === 'number') {
       valueX = valueY = value;
@@ -98,6 +98,10 @@ export class Vector2 implements Type, WebGLConvertible {
     }
 
     return new Vector2(map(from.x, to.x, valueX), map(from.y, to.y, valueY));
+  }
+
+  public lerp(to: Vector2, value: Vector2 | number) {
+    return Vector2.lerp(this, to, value);
   }
 
   public static arcLerp(
@@ -308,7 +312,10 @@ export class Vector2 implements Type, WebGLConvertible {
   }
 
   public get safe(): Vector2 {
-    return new Vector2(isNaN(this.x) ? 0 : this.x, isNaN(this.y) ? 0 : this.y);
+    return new Vector2(
+      Number.isNaN(this.x) ? 0 : this.x,
+      Number.isNaN(this.y) ? 0 : this.y,
+    );
   }
 
   public get flipped(): Vector2 {
@@ -381,10 +388,6 @@ export class Vector2 implements Type, WebGLConvertible {
 
     this.x = one.x;
     this.y = one.y;
-  }
-
-  public lerp(to: Vector2, value: Vector2 | number) {
-    return Vector2.lerp(this, to, value);
   }
 
   public getOriginOffset(origin: Origin | Direction) {

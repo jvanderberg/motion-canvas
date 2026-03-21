@@ -1,6 +1,4 @@
-export interface ReferenceReceiver<T> {
-  (reference: T): void;
-}
+export type ReferenceReceiver<T> = (reference: T) => void;
 
 export interface Reference<T> extends ReferenceReceiver<T> {
   (): T;

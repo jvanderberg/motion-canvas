@@ -6,11 +6,11 @@ import type {
   Renderer,
   SettingsMetadata,
 } from '@motion-canvas/core';
-import {Signal, useSignal} from '@preact/signals';
-import {ComponentChildren, createContext} from 'preact';
+import {type Signal, useSignal} from '@preact/signals';
+import {type ComponentChildren, createContext} from 'preact';
 import {useContext, useRef} from 'preact/hooks';
 import {useSubscribable} from '../hooks';
-import {EditorPlugin} from '../plugin';
+import type {EditorPlugin} from '../plugin';
 import {LoggerManager} from '../utils';
 
 export interface Inspection {
@@ -62,7 +62,11 @@ export function ApplicationProvider({
     >
       {application.plugins.reduce((children, plugin) => {
         const Component = plugin.provider;
-        return Component ? <Component>{children}</Component> : children;
+        return Component ? (
+          <Component key={plugin.name}>{children}</Component>
+        ) : (
+          children
+        );
       }, children)}
     </ApplicationContext.Provider>
   );

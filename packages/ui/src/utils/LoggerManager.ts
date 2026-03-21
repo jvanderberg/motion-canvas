@@ -1,8 +1,8 @@
 import {
   EventDispatcher,
+  type Logger,
   LogLevel,
-  LogPayload,
-  Logger,
+  type LogPayload,
   ValueDispatcher,
 } from '@motion-canvas/core';
 

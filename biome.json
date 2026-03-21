@@ -1,0 +1,63 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!**/*.js",
+      "!**/*.d.ts",
+      "!**/packages/template/**",
+      "!**/packages/create/template-*/**",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/lib/**",
+      "!**/editor/**",
+      "!**/.docusaurus/**"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 80,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "all",
+      "bracketSpacing": false,
+      "arrowParentheses": "asNeeded"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noConfusingVoidType": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noNamespace": "off",
+        "useConst": "error",
+        "noUnusedTemplateLiteral": "off"
+      },
+      "complexity": {
+        "noBannedTypes": "off",
+        "noUselessConstructor": "off"
+      },
+      "a11y": {
+        "recommended": false
+      },
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
+        "useJsxKeyInIterable": "warn"
+      },
+      "performance": {
+        "noDynamicNamespaceImportAccess": "off"
+      }
+    }
+  },
+  "assist": {"actions": {"source": {"organizeImports": "off"}}}
+}

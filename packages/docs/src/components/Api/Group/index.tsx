@@ -1,11 +1,15 @@
 import {useLocation} from '@docusaurus/router';
 import Category from '@site/src/components/Api/Group/Category';
-import {ApiLookup, useApiLookup} from '@site/src/contexts/api';
-import {Filters, matchFilters, useFilters} from '@site/src/contexts/filters';
+import {type ApiLookup, useApiLookup} from '@site/src/contexts/api';
+import {
+  type Filters,
+  matchFilters,
+  useFilters,
+} from '@site/src/contexts/filters';
 import Heading from '@theme/Heading';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-import React, {useEffect, useMemo} from 'react';
+import {useEffect, useMemo} from 'react';
 import type {JSONOutput} from 'typedoc';
 
 export interface FilteredGroup {
@@ -79,7 +83,7 @@ export default function Group({
   }, [location.hash, categories]);
 
   if (categories.length === 0) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -92,6 +96,7 @@ export default function Group({
           {categories.map(category => {
             return (
               <TabItem
+                key={category.title}
                 default={category.anchors.includes(hash)}
                 value={category.title}
                 label={category.title}

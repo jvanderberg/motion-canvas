@@ -1,7 +1,7 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import type {MotionCanvasPlayerProps} from '@motion-canvas/player';
 import clsx from 'clsx';
-import React, {ComponentProps} from 'react';
+import type {ComponentProps} from 'react';
 import AnimationLink from './AnimationLink';
 import styles from './styles.module.css';
 

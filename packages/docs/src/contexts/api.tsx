@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from 'react';
+import React, {type ReactNode, useContext} from 'react';
 import type {JSONOutput} from 'typedoc';
 
 declare module 'typedoc' {
@@ -71,9 +71,10 @@ export function useApiLookup(id: number): ApiLookup {
   return lookup[id];
 }
 
-interface ApiFinder {
-  <T extends JSONOutput.Reflection>(value?: {id: number; project: number}): T;
-}
+type ApiFinder = <T extends JSONOutput.Reflection>(value?: {
+  id: number;
+  project: number;
+}) => T;
 
 export function useApiFinder(): ApiFinder {
   const {lookup} = useContext(Context);

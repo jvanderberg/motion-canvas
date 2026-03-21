@@ -1,5 +1,5 @@
-import {Color, ColorSpace, InterpolationMode, mix} from 'chroma-js';
-import {Signal, SignalContext, SignalValue} from '../signals';
+import {Color, type ColorSpace, type InterpolationMode, mix} from 'chroma-js';
+import {type Signal, SignalContext, type SignalValue} from '../signals';
 import type {InterpolationFunction} from '../tweening';
 import type {Type, WebGLConvertible} from './Type';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Token from '@site/src/components/Api/Code/Token';
 import TokenList, {ListType} from '@site/src/components/Api/Code/TokenList';
 import Type from '@site/src/components/Api/Type';
@@ -22,8 +20,8 @@ export default function ReferenceType({
       </Token>
       {!!type.typeArguments?.length && (
         <TokenList type={ListType.Angle}>
-          {type.typeArguments.map((type, index) => (
-            <Type key={index} type={type} />
+          {type.typeArguments.map(type => (
+            <Type key={JSON.stringify(type)} type={type} />
           ))}
         </TokenList>
       )}

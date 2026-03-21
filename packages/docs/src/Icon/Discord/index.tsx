@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react';
+import type {ComponentProps} from 'react';
 
 export default function IconDiscord({
   width = 24,

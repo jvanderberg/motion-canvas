@@ -1,11 +1,10 @@
-import styles from './Timeline.module.scss';
-
 import type {Scene} from '@motion-canvas/core';
 import {useMemo} from 'preact/hooks';
 import {useApplication, useTimelineContext} from '../../contexts';
 import {useScenes, useSubscribableValue} from '../../hooks';
 import {findAndOpenFirstUserFile} from '../../utils';
 import {SlideTrack} from './SlideTrack';
+import styles from './Timeline.module.scss';
 
 export function SceneTrack() {
   const scenes = useScenes();
@@ -13,7 +12,7 @@ export function SceneTrack() {
   return (
     <div className={styles.sceneTrack}>
       {scenes.map(scene => (
-        <SceneClip scene={scene} />
+        <SceneClip key={scene.name} scene={scene} />
       ))}
     </div>
   );

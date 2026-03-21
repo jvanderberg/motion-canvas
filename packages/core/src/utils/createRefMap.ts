@@ -1,4 +1,4 @@
-import {createRef, Reference} from './createRef';
+import {createRef, type Reference} from './createRef';
 
 export type ReferenceMap<T> = Map<string, Reference<T>> &
   Record<string, Reference<T>> & {
@@ -62,9 +62,9 @@ const Handler: ProxyHandler<Map<string, Reference<any>>> = {
     }
 
     if (property === 'mapRefs') {
-      return function <TValue>(
+      return <TValue>(
         callback: (value: any, index: number) => TValue,
-      ): TValue[] {
+      ): TValue[] => {
         const result: TValue[] = [];
         for (const value of target.values()) {
           result.push(callback(value(), result.length));

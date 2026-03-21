@@ -1,8 +1,8 @@
-import * as crypto from 'crypto';
-import * as fs from 'fs';
-import type {ServerResponse} from 'http';
-import * as path from 'path';
-import {Plugin, WebSocketServer} from 'vite';
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import type {ServerResponse} from 'node:http';
+import * as path from 'node:path';
+import type {Plugin, WebSocketServer} from 'vite';
 
 interface PendingRequest {
   resolve: (value: any) => void;
@@ -82,7 +82,7 @@ export function cliRemotePlugin(): Plugin {
       const origSend = server.ws.send.bind(server.ws) as (
         ...args: any[]
       ) => any;
-      server.ws.send = function (first: any, second?: any) {
+      server.ws.send = (first: any, second?: any) => {
         // Vite sends errors as ws.send({ type: 'error', err: {...} })
         if (typeof first === 'object' && first?.type === 'error') {
           const err = first.err;

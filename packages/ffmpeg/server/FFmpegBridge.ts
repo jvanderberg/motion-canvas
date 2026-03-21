@@ -1,9 +1,9 @@
-import {PluginConfig} from '@motion-canvas/vite-plugin';
-import {ServerResponse} from 'node:http';
-import {Connect, ViteDevServer} from 'vite';
+import type {ServerResponse} from 'node:http';
+import type {PluginConfig} from '@motion-canvas/vite-plugin';
+import type {Connect, ViteDevServer} from 'vite';
 import {
   FFmpegExporterServer,
-  FFmpegExporterSettings,
+  type FFmpegExporterSettings,
 } from './FFmpegExporterServer';
 
 interface BrowserRequest {

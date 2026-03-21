@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, test} from 'vitest';
 import {Matrix2D} from './Matrix2D';
-import {PossibleVector2, Vector2} from './Vector';
+import {type PossibleVector2, Vector2} from './Vector';
 
 type Matrix2DValues = [number, number, number, number, number, number];
 
@@ -84,13 +84,14 @@ describe('Matrix2D', () => {
       string,
       [PossibleVector2, PossibleVector2, PossibleVector2],
       Matrix2DValues,
-    ][])(
-      'can be constructed from three PossibleVector2 %s',
-      (_, [vec1, vec2, vec3], expected) => {
-        const matrix = new Matrix2D(vec1, vec2, vec3);
-        expect(matrix.values).toEqual(new Float32Array(expected));
-      },
-    );
+    ][])('can be constructed from three PossibleVector2 %s', (_, [
+      vec1,
+      vec2,
+      vec3,
+    ], expected) => {
+      const matrix = new Matrix2D(vec1, vec2, vec3);
+      expect(matrix.values).toEqual(new Float32Array(expected));
+    });
 
     test('can be constructed from a rotation', () => {
       const matrix = Matrix2D.fromRotation(90);
@@ -100,24 +101,26 @@ describe('Matrix2D', () => {
     test.each([
       ['non-uniform', [-100, 200], [1, 0, 0, 1, -100, 200]],
       ['uniform', 400, [1, 0, 0, 1, 400, 400]],
-    ] as [string, PossibleVector2, Matrix2DValues][])(
-      'can be constructed from a translation: %s',
-      (_, translation, expected) => {
-        const matrix = Matrix2D.fromTranslation(translation);
-        expect(matrix.equals(new Matrix2D(...expected))).toBe(true);
-      },
-    );
+    ] as [
+      string,
+      PossibleVector2,
+      Matrix2DValues,
+    ][])('can be constructed from a translation: %s', (_, translation, expected) => {
+      const matrix = Matrix2D.fromTranslation(translation);
+      expect(matrix.equals(new Matrix2D(...expected))).toBe(true);
+    });
 
     test.each([
       ['non-uniform', [2, 3], [2, 0, 0, 3, 0, 0]],
       ['uniform', 3, [3, 0, 0, 3, 0, 0]],
-    ] as [string, PossibleVector2, Matrix2DValues][])(
-      'can be constructed from a scaling: %s',
-      (_, scaling, expected) => {
-        const matrix = Matrix2D.fromScaling(scaling);
-        expect(matrix).toEqual(new Matrix2D(...expected));
-      },
-    );
+    ] as [
+      string,
+      PossibleVector2,
+      Matrix2DValues,
+    ][])('can be constructed from a scaling: %s', (_, scaling, expected) => {
+      const matrix = Matrix2D.fromScaling(scaling);
+      expect(matrix).toEqual(new Matrix2D(...expected));
+    });
   });
 
   describe('getters and setters', () => {
@@ -320,9 +323,12 @@ describe('Matrix2D', () => {
     test('not exactly equal when not all values are exactly equal', () => {
       // prettier-ignore
       const other = new Matrix2D(
-        0.999999, -0.999999,
-        0.999999, 0.999999,
-        0.999999, -0.999999,
+        0.999999,
+        -0.999999,
+        0.999999,
+        0.999999,
+        0.999999,
+        -0.999999,
       );
       expect(Matrix2D.identity.exactlyEquals(other)).toBe(false);
     });

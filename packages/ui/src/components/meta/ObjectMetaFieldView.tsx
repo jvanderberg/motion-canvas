@@ -12,7 +12,7 @@ export function ObjectMetaFieldView({field}: ObjectMetaFieldViewProps) {
   return (
     <>
       {fields.map(subfield => (
-        <MetaFieldView field={subfield} />
+        <MetaFieldView key={subfield.name} field={subfield} />
       ))}
     </>
   );

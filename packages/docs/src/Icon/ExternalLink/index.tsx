@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {ComponentProps} from 'react';
+import type {ComponentProps} from 'react';
 
 export default function IconExternalLink({
   width = 24,

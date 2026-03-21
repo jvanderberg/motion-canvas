@@ -1,9 +1,13 @@
-import {CompoundSignal, CompoundSignalContext, SignalValue} from '../signals';
-import {InterpolationFunction, arcLerp, map} from '../tweening';
-import {PossibleMatrix2D} from './Matrix2D';
-import {PossibleSpacing, Spacing} from './Spacing';
-import {Type, WebGLConvertible} from './Type';
-import {PossibleVector2, Vector2} from './Vector';
+import {
+  type CompoundSignal,
+  CompoundSignalContext,
+  type SignalValue,
+} from '../signals';
+import {arcLerp, type InterpolationFunction, map} from '../tweening';
+import type {PossibleMatrix2D} from './Matrix2D';
+import {type PossibleSpacing, Spacing} from './Spacing';
+import type {Type, WebGLConvertible} from './Type';
+import {type PossibleVector2, Vector2} from './Vector';
 
 export type SerializedBBox = {
   x: number;
@@ -50,10 +54,10 @@ export class BBox implements Type, WebGLConvertible {
     to: BBox,
     value: number | Vector2 | BBox,
   ): BBox {
-    let valueX;
-    let valueY;
-    let valueWidth;
-    let valueHeight;
+    let valueX: number;
+    let valueY: number;
+    let valueWidth: number;
+    let valueHeight: number;
     if (typeof value === 'number') {
       valueX = valueY = valueWidth = valueHeight = value;
     } else if (value instanceof Vector2) {
@@ -72,6 +76,10 @@ export class BBox implements Type, WebGLConvertible {
       map(from.width, to.width, valueWidth),
       map(from.height, to.height, valueHeight),
     );
+  }
+
+  public lerp(to: BBox, value: number | Vector2 | BBox) {
+    return BBox.lerp(this, to, value);
   }
 
   public static arcLerp(
@@ -139,10 +147,6 @@ export class BBox implements Type, WebGLConvertible {
     }
 
     return new BBox(minX, minY, maxX - minX, maxY - minY);
-  }
-
-  public lerp(to: BBox, value: number | Vector2 | BBox) {
-    return BBox.lerp(this, to, value);
   }
 
   public get position() {

@@ -1,4 +1,4 @@
-import {PossibleVector2, Vector2} from '../types';
+import {type PossibleVector2, Vector2} from '../types';
 import {MetaField} from './MetaField';
 
 /**

@@ -1,15 +1,15 @@
 import {run, waitFor} from '../flow';
-import {ThreadGenerator} from '../threading';
+import type {ThreadGenerator} from '../threading';
 import {
-  InterpolationFunction,
-  TimingFunction,
   easeInOutCubic,
+  type InterpolationFunction,
+  type TimingFunction,
   tween,
 } from '../tweening';
 import {errorToLog, useLogger} from '../utils';
 import {DependencyContext} from './DependencyContext';
 import {DEFAULT} from './symbols';
-import {
+import type {
   SignalExtensions,
   SignalGenerator,
   SignalGetter,
@@ -228,11 +228,26 @@ export class SignalContext<
     };
 
     task.do = (callback: () => void) => {
-      queue.push(
-        run(function* () {
-          callback();
-        }),
-      );
+      let called = false;
+      const gen: ThreadGenerator = {
+        next() {
+          if (!called) {
+            called = true;
+            callback();
+          }
+          return {value: undefined, done: true as const};
+        },
+        return(value: void) {
+          return {value, done: true as const};
+        },
+        throw(error: unknown): never {
+          throw error;
+        },
+        [Symbol.iterator]() {
+          return this;
+        },
+      };
+      queue.push(gen);
       return task;
     };
 

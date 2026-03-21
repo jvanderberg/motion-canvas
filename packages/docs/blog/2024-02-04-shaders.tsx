@@ -1,4 +1,4 @@
-import {Rect, makeScene2D} from '@motion-canvas/2d';
+import {makeScene2D, Rect} from '@motion-canvas/2d';
 import {waitFor} from '@motion-canvas/core';
 
 // Original shader created by ufffd

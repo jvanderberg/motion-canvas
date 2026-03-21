@@ -1,5 +1,5 @@
 import {MetaField} from './MetaField';
-import {MetaOption} from './MetaOption';
+import type {MetaOption} from './MetaOption';
 
 /**
  * Represents an enum value stored in a meta file.

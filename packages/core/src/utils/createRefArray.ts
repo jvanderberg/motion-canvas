@@ -1,4 +1,4 @@
-import {Reference} from './createRef';
+import type {Reference} from './createRef';
 
 type ProxyTarget<T> = {
   (): void;
@@ -31,9 +31,9 @@ export type ReferenceArray<T> = T[] & Reference<T>;
  * ```
  */
 export function createRefArray<T>(): ReferenceArray<T> {
-  const target = function () {
+  const target = (() => {
     // do nothing
-  } as ProxyTarget<T>;
+  }) as ProxyTarget<T>;
   target.array = [];
   return new Proxy(target, Handler) as unknown as ReferenceArray<T>;
 }

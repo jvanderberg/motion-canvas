@@ -13,7 +13,7 @@ export default function useStorage<T>(key: string, initialState: T) {
       }
     }
     return initialState;
-  }, [key]);
+  }, [key, initialState, isBrowser]);
   const [state, setState] = useState<T>(savedState);
 
   const updateState = useCallback(
@@ -23,7 +23,7 @@ export default function useStorage<T>(key: string, initialState: T) {
       }
       setState(newState);
     },
-    [setState, key],
+    [key, isBrowser],
   );
 
   return [state, updateState];

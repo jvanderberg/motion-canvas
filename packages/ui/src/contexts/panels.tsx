@@ -1,7 +1,7 @@
-import {computed, ReadonlySignal} from '@preact/signals';
-import {ComponentChildren, createContext} from 'preact';
+import {computed, type ReadonlySignal} from '@preact/signals';
+import {type ComponentChildren, createContext} from 'preact';
 import {useContext, useMemo} from 'preact/hooks';
-import {PluginInspectorConfig, PluginTabConfig} from '../plugin';
+import type {PluginInspectorConfig, PluginTabConfig} from '../plugin';
 import {EditorPanel, storedSignal} from '../signals';
 import {useApplication} from './application';
 
