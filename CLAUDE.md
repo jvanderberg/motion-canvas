@@ -22,15 +22,19 @@ Do not commit code that fails `npm run check`.
 
 ## Dev Server
 
-Start the dev server from `packages/examples/`:
-
 ```bash
-npm run examples:dev    # runs: cd packages/examples && npx vite --port 9000
+npm run examples:dev    # starts dev server on port 9000
 ```
 
-Scene files live in `packages/examples/src/scenes/`. Each scene needs a
-corresponding project file in `packages/examples/src/` and an entry in
-`packages/examples/vite.config.ts`.
+The dev server auto-discovers `.tsx` scene files from `projects/` (repo root).
+All scenes load as a single project — no picker, use the editor's scene dropdown
+to switch between them.
+
+To use a different directory:
+
+```bash
+PROJECTS=/path/to/scenes npm run examples:dev
+```
 
 ## Build
 
@@ -88,7 +92,7 @@ node render.mjs --render png
 
 ### Workflow for verifying animation changes
 
-1. Make changes to a scene file in `packages/examples/src/scenes/`
+1. Make changes to a scene file in `projects/`
 2. **Always check for errors first:** `node render.mjs --logs`
    - HMR delivers changes to the browser automatically — wait 2-3 seconds after
      saving
@@ -105,14 +109,14 @@ in the browser, not during `vite build`.
 
 ## Project Structure
 
-- `packages/examples/src/scenes/*.tsx` — animation scenes (makeScene2D)
-- `packages/examples/src/scenes/*.meta` — scene metadata (timeEvents, seed)
-- `packages/examples/src/*.ts` — project files (one per scene or group)
-- `packages/examples/vite.config.ts` — Vite config with project list
+- `projects/*.tsx` — animation scenes (makeScene2D), auto-discovered by dev
+  server (gitignored, not linted)
+- `projects/*.meta` — scene metadata (timeEvents, seed)
+- `packages/examples/vite.config.ts` — Vite config, scans projects dir at
+  startup
 - `render.mjs` — CLI render/capture script
 - `cli-render-plugin.ts` — standalone Vite plugin fallback (fork has this
   built-in via `packages/vite-plugin/src/partials/cliRemote.ts`)
-- `projects/` — working scene files (gitignored, not linted)
 
 ## Color Palette
 
