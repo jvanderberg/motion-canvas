@@ -24,7 +24,11 @@ export function openInExplorer(file: string) {
   }
 
   if (command) {
-    spawn(command, args, {detached: true}).unref();
+    spawn(command, args, {detached: true})
+      .on('error', () => {
+        // Silently ignore if the command doesn't exist (e.g. no xdg-open).
+      })
+      .unref();
   } else {
     console.warn(`Unsupported OS: ${os}`);
   }

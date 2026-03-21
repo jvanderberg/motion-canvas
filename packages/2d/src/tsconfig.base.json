@@ -5,7 +5,7 @@
     "strict": true,
     "noImplicitOverride": true,
     "module": "esnext",
-    "target": "es2020",
+    "target": "es2022",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declaration": true,

@@ -7,6 +7,10 @@ Do not commit code that fails `npm run check`.
 
 **Important:** After modifying core package source, rebuild `lib/` with `npx tspc -p packages/core/tsconfig.build.json` so 2d tests can resolve `.md` imports.
 
+## Dev Server
+
+Always start the dev server from within the monorepo (`packages/examples/`), never from `/workspace`. The `/workspace` project has its own `node_modules` with stale copies of the plugins — changes to the monorepo source won't be picked up there.
+
 ## Editor Setup
 
 The Vite dev server runs on port 9000. The editor must be open in a browser for

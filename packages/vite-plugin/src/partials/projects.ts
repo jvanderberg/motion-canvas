@@ -77,6 +77,12 @@ import {MetaFile} from '@motion-canvas/core';
 
     config(config) {
       return {
+        resolve: {
+          alias: {
+            react: 'preact/compat',
+            'react-dom': 'preact/compat',
+          },
+        },
         build: {
           target: buildForEditor ? 'esnext' : 'modules',
           assetsDir: './',
@@ -99,7 +105,15 @@ import {MetaFile} from '@motion-canvas/core';
         } as ESBuildOptions,
         optimizeDeps: {
           entries: projects.map(project => project.filePath),
-          exclude: ['preact', 'preact/*', '@preact/signals'],
+          include: ['parse-svg-path'],
+          exclude: [
+            'preact',
+            'preact/*',
+            '@preact/signals',
+            '@motion-canvas/core',
+            '@motion-canvas/2d',
+            '@motion-canvas/ui',
+          ],
         },
       };
     },
