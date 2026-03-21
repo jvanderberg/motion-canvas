@@ -19,17 +19,17 @@
     "lib"
   ],
   "peerDependencies": {
-    "vite": "4.x || 5.x"
+    "vite": "5.x || 6.x || 7.x || 8.x"
   },
   "devDependencies": {
     "@types/follow-redirects": "^1.14.1",
-    "@types/mime-types": "^2.1.1",
-    "@types/node": "^18.14.0"
+    "@types/mime-types": "^3.0.1",
+    "@types/node": "^22.0.0"
   },
   "dependencies": {
     "fast-glob": "^3.3.1",
     "follow-redirects": "^1.15.2",
-    "mime-types": "^2.1.35",
-    "source-map": "^0.6.1"
+    "mime-types": "^3.0.2",
+    "source-map": "^0.7.6"
   }
 }

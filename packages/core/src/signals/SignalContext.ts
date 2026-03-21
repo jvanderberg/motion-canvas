@@ -246,6 +246,9 @@ export class SignalContext<
         [Symbol.iterator]() {
           return this;
         },
+        [Symbol.dispose]() {
+          // noop
+        },
       };
       queue.push(gen);
       return task;

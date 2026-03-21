@@ -2,7 +2,7 @@ import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import type {ServerResponse} from 'node:http';
 import * as path from 'node:path';
-import type {Plugin, WebSocketServer} from 'vite';
+import type {NormalizedHotChannel, Plugin} from 'vite';
 
 interface PendingRequest {
   resolve: (value: any) => void;
@@ -33,7 +33,7 @@ function png(res: ServerResponse, buffer: Buffer) {
 export function cliRemotePlugin(): Plugin {
   const pending = new Map<string, PendingRequest>();
   const serverLogs: LogEntry[] = [];
-  let ws: WebSocketServer | null = null;
+  let hot: NormalizedHotChannel | null = null;
 
   function sendAndWait(
     event: string,
@@ -41,8 +41,8 @@ export function cliRemotePlugin(): Plugin {
     timeoutMs = 30000,
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!ws) {
-        reject(new Error('WebSocket server not available'));
+      if (!hot) {
+        reject(new Error('Hot channel not available'));
         return;
       }
       const id = crypto.randomUUID();
@@ -51,7 +51,7 @@ export function cliRemotePlugin(): Plugin {
         reject(new Error(`Timeout waiting for ${event} response`));
       }, timeoutMs);
       pending.set(id, {resolve, reject, timer});
-      ws.send(event, {...payload, id});
+      hot.send(event, {...payload, id});
     });
   }
 
@@ -78,12 +78,12 @@ export function cliRemotePlugin(): Plugin {
     name: 'motion-canvas:cli-remote',
 
     configureServer(server) {
-      // Intercept Vite's WebSocket error events (compilation/transform errors)
-      const origSend = server.ws.send.bind(server.ws) as (
+      // Intercept Vite's hot channel error events (compilation/transform errors)
+      const origSend = server.hot.send.bind(server.hot) as (
         ...args: any[]
       ) => any;
-      server.ws.send = (first: any, second?: any) => {
-        // Vite sends errors as ws.send({ type: 'error', err: {...} })
+      server.hot.send = (first: any, second?: any) => {
+        // Vite sends errors as hot.send({ type: 'error', err: {...} })
         if (typeof first === 'object' && first?.type === 'error') {
           const err = first.err;
           if (err) {
@@ -98,12 +98,12 @@ export function cliRemotePlugin(): Plugin {
           ? (origSend as any)(first, second)
           : (origSend as any)(first);
       };
-      ws = server.ws;
+      hot = server.hot;
 
-      server.ws.on('motion-canvas:cli-capture-result', handleResult());
-      server.ws.on('motion-canvas:cli-render-result', handleResult());
-      server.ws.on('motion-canvas:cli-status-result', handleResult());
-      server.ws.on('motion-canvas:cli-logs-result', handleResult());
+      server.hot.on('motion-canvas:cli-capture-result', handleResult());
+      server.hot.on('motion-canvas:cli-render-result', handleResult());
+      server.hot.on('motion-canvas:cli-status-result', handleResult());
+      server.hot.on('motion-canvas:cli-logs-result', handleResult());
 
       server.middlewares.use(async (req, res, next) => {
         const url = new URL(req.url!, `http://${req.headers.host}`);

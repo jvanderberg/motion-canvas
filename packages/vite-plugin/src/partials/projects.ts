@@ -1,5 +1,5 @@
 import path from 'node:path';
-import type {Plugin, ResolvedConfig} from 'vite';
+import type {ESBuildOptions, Plugin, ResolvedConfig} from 'vite';
 import type {PluginOptions, ProjectData} from '../plugins';
 import {createMeta} from '../utils';
 import {getVersions} from '../versions';
@@ -96,7 +96,7 @@ import {MetaFile} from '@motion-canvas/core';
         esbuild: {
           jsx: 'automatic',
           jsxImportSource: '@motion-canvas/2d/lib',
-        },
+        } as ESBuildOptions,
         optimizeDeps: {
           entries: projects.map(project => project.filePath),
           exclude: ['preact', 'preact/*', '@preact/signals'],

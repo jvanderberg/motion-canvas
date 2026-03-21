@@ -40,7 +40,7 @@ export default meta;
     },
 
     configureServer(server) {
-      server.ws.on('motion-canvas:meta', async ({source, data}, client) => {
+      server.hot.on('motion-canvas:meta', async ({source, data}, client) => {
         // Ignore virtual meta files.
         if (source.startsWith('\0')) {
           return;
@@ -56,7 +56,7 @@ export default meta;
       });
     },
 
-    handleHotUpdate(ctx) {
+    hotUpdate(ctx) {
       const now = Date.now();
       const modules = [];
 

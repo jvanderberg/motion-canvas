@@ -25,12 +25,12 @@
     "shaders"
   ],
   "dependencies": {
-    "@types/chroma-js": "2.4.4",
-    "chroma-js": "2.4.2"
+    "@types/chroma-js": "^3.1.2",
+    "chroma-js": "^3.2.0"
   },
   "devDependencies": {
     "@motion-canvas/internal": "0.0.0",
-    "jsdom": "^22.1.0",
-    "vitest": "^0.34.6"
+    "jsdom": "^29.0.1",
+    "vitest": "^4.1.0"
   }
 }

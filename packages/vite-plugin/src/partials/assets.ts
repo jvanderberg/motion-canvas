@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {Readable} from 'node:stream';
-import type {ModuleNode, Plugin, ResolvedConfig} from 'vite';
+import type {EnvironmentModuleNode, Plugin, ResolvedConfig} from 'vite';
 
 const AUDIO_EXTENSION_REGEX = /\.(mp3|wav|ogg|aac|flac)(?:$|\?)/;
 const AUDIO_HMR_DELAY = 1000;
@@ -36,23 +36,32 @@ export function assetsPlugin({
       });
     },
 
-    async handleHotUpdate(ctx) {
-      const urls = [];
-      const modules: ModuleNode[] = [];
+    hotUpdate(ctx) {
+      const urls: string[] = [];
+      const modules: EnvironmentModuleNode[] = [];
+      const audioPromises: Promise<void>[] = [];
 
       for (const module of ctx.modules) {
         urls.push(module.url);
         if (!AUDIO_EXTENSION_REGEX.test(module.url)) {
           modules.push(module);
         } else {
-          await new Promise(resolve => {
-            setTimeout(resolve, AUDIO_HMR_DELAY);
-          });
+          audioPromises.push(
+            new Promise(resolve => {
+              setTimeout(resolve, AUDIO_HMR_DELAY);
+            }),
+          );
         }
       }
 
-      if (urls.length > 0) {
-        ctx.server.ws.send('motion-canvas:assets', {urls});
+      if (audioPromises.length > 0 || urls.length > 0) {
+        const finish = async () => {
+          await Promise.all(audioPromises);
+          if (urls.length > 0) {
+            this.environment.hot.send('motion-canvas:assets', {urls});
+          }
+        };
+        finish();
       }
 
       return modules;

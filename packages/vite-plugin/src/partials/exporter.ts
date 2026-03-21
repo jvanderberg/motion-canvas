@@ -26,7 +26,7 @@ export function exporterPlugin({outputPath}: ExporterPluginConfig): Plugin {
         next();
       });
 
-      server.ws.on(
+      server.hot.on(
         'motion-canvas:export',
         async ({data, frame, name, subDirectories, mimeType}, client) => {
           const extension = mime.extension(mimeType);
@@ -51,9 +51,9 @@ export function exporterPlugin({outputPath}: ExporterPluginConfig): Plugin {
 }
 
 function writeBase64(filePath: string, base64: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fs.createWriteStream(filePath)
-      .on('finish', resolve)
+      .on('finish', () => resolve())
       .on('error', reject)
       .end(Buffer.from(base64, 'base64'));
   });

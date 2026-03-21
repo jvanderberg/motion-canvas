@@ -10,6 +10,10 @@
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "vite": ["../../node_modules/vite/dist/node/index.d.ts"]
+    },
     "plugins": [
       {
         "transform": "@motion-canvas/internal/transformers/markdown-literals.js"

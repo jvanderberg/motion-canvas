@@ -35,7 +35,7 @@ export function settingsPlugin(): Plugin {
     },
 
     configureServer(server) {
-      server.ws.on('motion-canvas:meta', async ({source, data}, client) => {
+      server.hot.on('motion-canvas:meta', async ({source, data}, client) => {
         if (source !== resolvedSettingsId) {
           return;
         }
