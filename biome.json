@@ -5,13 +5,14 @@
       "**",
       "!**/*.js",
       "!**/*.d.ts",
-      "!**/packages/template/**",
-      "!**/packages/create/template-*/**",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/lib/**",
-      "!**/editor/**",
-      "!**/.docusaurus/**"
+      "!**/packages/template",
+      "!**/packages/create/template-*",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/lib",
+      "!**/editor",
+      "!**/.docusaurus",
+      "!**/projects"
     ]
   },
   "formatter": {
@@ -59,5 +60,5 @@
       }
     }
   },
-  "assist": {"actions": {"source": {"organizeImports": "off"}}}
+  "assist": { "actions": { "source": { "organizeImports": "off" } } }
 }

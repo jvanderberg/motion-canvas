@@ -1,27 +1,49 @@
 # Motion Canvas Animation Project
 
+## Quick Start
+
+```bash
+npm install
+npm run buildall        # builds core, 2d, vite-plugin, ui
+npm run examples:dev    # starts dev server on port 9000
+```
+
+Then open `http://localhost:9000` in a browser (or see `yolobox.md` for
+remote/VM setups).
+
 ## Before Committing
 
-Run `npm run check` before every commit. This runs Biome (lint + format), TypeScript type checking, and tests.
+Run `npm run check` before every commit. This runs Biome (lint + format),
+TypeScript type checking, and tests.
 Do not commit code that fails `npm run check`.
 
-**Important:** After modifying core package source, rebuild `lib/` with `npx tspc -p packages/core/tsconfig.build.json` so 2d tests can resolve `.md` imports.
+**Important:** After modifying core package source, rebuild with
+`npm run buildall`.
 
 ## Dev Server
 
-Always start the dev server from within the monorepo (`packages/examples/`), never from `/workspace`. The `/workspace` project has its own `node_modules` with stale copies of the plugins — changes to the monorepo source won't be picked up there.
+Start the dev server from `packages/examples/`:
 
-## Editor Setup
+```bash
+npm run examples:dev    # runs: cd packages/examples && npx vite --port 9000
+```
 
-The Vite dev server runs on port 9000. The editor must be open in a browser for
-the CLI to work.
+Scene files live in `packages/examples/src/scenes/`. Each scene needs a
+corresponding project file in `packages/examples/src/` and an entry in
+`packages/examples/vite.config.ts`.
 
-- Start server: `npx vite --port 9000`
-- Open in browser:
-  `/yolobox/scripts/yolobox-open-url http://animation-proto.local:9000`
+## Build
 
-The project uses a fork of Motion Canvas at `/workspace/motion-canvas`
-(github.com/jvanderberg/motion-canvas) with CLI remote control baked in.
+`npm run buildall` builds everything needed for the dev server:
+
+1. `core` — TypeScript compiler with path transforms
+2. `2d` lib — the 2D rendering library
+3. `vite-plugin` — the Motion Canvas Vite plugin (includes CLI remote control)
+4. `ui` — the editor UI (Vite build only; tsc has known Preact type errors that
+   don't affect the JS output)
+
+The upstream `npx lerna run build` does **not** work — `ui` and `ffmpeg` have
+TypeScript errors from the Vite 8 migration. Use `npm run buildall` instead.
 
 ## Rendering / Frame Capture
 
@@ -66,7 +88,7 @@ node render.mjs --render png
 
 ### Workflow for verifying animation changes
 
-1. Make changes to a scene file in `src/scenes/`
+1. Make changes to a scene file in `packages/examples/src/scenes/`
 2. **Always check for errors first:** `node render.mjs --logs`
    - HMR delivers changes to the browser automatically — wait 2-3 seconds after
      saving
@@ -83,16 +105,14 @@ in the browser, not during `vite build`.
 
 ## Project Structure
 
-- `src/project.ts` — project config, active scenes, plugins
-- `src/scenes/*.tsx` — animation scenes (makeScene2D)
-- `src/scenes/*.meta` — scene metadata (timeEvents, seed)
-- `cli-render-plugin.ts` — Vite plugin for HTTP endpoints (project-local
-  fallback; fork has this built-in)
-- `src/cli-plugin.ts` — Motion Canvas plugin for WebSocket listeners
-  (project-local fallback; fork has this built-in)
-- `render.mjs` — CLI script
-- `vite.config.ts` — Vite config with motion-canvas + ffmpeg + cli-render
-  plugins
+- `packages/examples/src/scenes/*.tsx` — animation scenes (makeScene2D)
+- `packages/examples/src/scenes/*.meta` — scene metadata (timeEvents, seed)
+- `packages/examples/src/*.ts` — project files (one per scene or group)
+- `packages/examples/vite.config.ts` — Vite config with project list
+- `render.mjs` — CLI render/capture script
+- `cli-render-plugin.ts` — standalone Vite plugin fallback (fork has this
+  built-in via `packages/vite-plugin/src/partials/cliRemote.ts`)
+- `projects/` — working scene files (gitignored, not linted)
 
 ## Color Palette
 
@@ -160,8 +180,8 @@ node render.mjs --logs
 
 ### Prerequisites
 
-- Vite dev server running on port 9000: `npx vite --port 9000`
-- Editor open in browser:
-  `/yolobox/scripts/yolobox-open-url http://animation-proto.local:9000`
+- Build all packages: `npm run buildall`
+- Vite dev server running on port 9000: `npm run examples:dev`
+- Editor open in a browser at `http://localhost:9000`
 - If `--status` returns `{"ready":false}` or times out, the browser tab needs to
   be open/refreshed
