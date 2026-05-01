@@ -10,7 +10,10 @@
     "module": "CommonJS",
     "target": "es2020",
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "paths": {
+      "vite": ["../../../node_modules/vite/dist/node/index.d.ts"]
+    }
   },
   "include": ["."]
 }
