@@ -28,7 +28,10 @@ const {values} = parseArgs({
   strict: true,
 });
 
-if (values.help || (!values.frame && !values.render && !values.status && !values.logs)) {
+if (
+  values.help ||
+  (!values.frame && !values.render && !values.status && !values.logs)
+) {
   console.log(`Motion Canvas CLI Renderer
 
 Usage:
@@ -78,7 +81,12 @@ async function main() {
       console.log('No errors or warnings.');
     } else {
       for (const log of data) {
-        const prefix = log.level === 'error' ? 'ERROR' : log.level === 'warn' ? 'WARN' : log.level.toUpperCase();
+        const prefix =
+          log.level === 'error'
+            ? 'ERROR'
+            : log.level === 'warn'
+              ? 'WARN'
+              : log.level.toUpperCase();
         console.log(`[${prefix}] ${log.message}`);
         if (log.stack) console.log(log.stack);
       }

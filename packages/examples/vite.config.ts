@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import ffmpeg from '@motion-canvas/ffmpeg';
 import motionCanvas from '@motion-canvas/vite-plugin';
 import {defineConfig} from 'vite';
 
@@ -55,7 +56,9 @@ export default defineConfig({
   plugins: [
     motionCanvas({
       project: ['./src/.generated-project.ts'],
+      output: path.join(projectsDir, 'rendered'),
     }),
+    ffmpeg(),
   ],
   build: {
     rollupOptions: {

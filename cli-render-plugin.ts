@@ -1,6 +1,6 @@
-import * as crypto from 'crypto';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import type {Plugin, WebSocketServer} from 'vite';
 
 interface PendingRequest {
@@ -33,7 +33,7 @@ export function cliRenderPlugin(): Plugin {
     });
   }
 
-  function handleResult(event: string) {
+  function handleResult(_event: string) {
     return (data: any) => {
       const req = pending.get(data.id);
       if (!req) return;
