@@ -20,6 +20,11 @@ export interface RendererSettings extends StageSettings {
     name: string;
     options: unknown;
   };
+  /**
+   * Optional list of scene names to render. When set, only matching scenes
+   * are included — this mirrors the scene filter dropdown in the editor.
+   */
+  sceneNames?: string[];
 }
 
 export enum RendererState {
@@ -67,6 +72,7 @@ export class Renderer {
   private readonly playback: PlaybackManager;
   private readonly status: PlaybackStatus;
   private readonly sharedWebGLContext: SharedWebGLContext;
+  private readonly allScenes: Scene[];
   private exporter: Exporter | null = null;
   private abortController: AbortController | null = null;
 
@@ -89,6 +95,7 @@ export class Renderer {
       });
       scenes.push(scene);
     }
+    this.allScenes = scenes;
     this.playback.setup(scenes);
   }
 
@@ -204,7 +211,22 @@ export class Renderer {
     const from = this.status.secondsToFrames(settings.range[0]);
     this.frame.current = from;
 
+    // Restore full scene list (may have been filtered by a previous render)
+    this.playback.setup(this.allScenes);
+
     await this.reloadScenes(settings);
+
+    // Filter to selected scenes if specified
+    if (settings.sceneNames && settings.sceneNames.length > 0) {
+      const nameSet = new Set(settings.sceneNames);
+      const filtered = this.playback.onScenesRecalculated.current.filter(s =>
+        nameSet.has(s.name),
+      );
+      if (filtered.length > 0) {
+        this.playback.setup(filtered);
+      }
+    }
+
     await this.playback.recalculate();
     if (signal.aborted) return RendererResult.Aborted;
 

@@ -1,6 +1,6 @@
 import {RendererState} from '@motion-canvas/core';
 import {useApplication} from '../../contexts';
-import {useRendererState, useStorage} from '../../hooks';
+import {useRendererState, useScenes, useStorage} from '../../hooks';
 import {openOutputPath} from '../../utils';
 import {Button, ButtonSelect, Group, Label, Separator} from '../controls';
 import {Expandable} from '../fields';
@@ -48,8 +48,9 @@ interface ProcessButtonProps {
 }
 
 function ProcessButton({processId, setProcess}: ProcessButtonProps) {
-  const {renderer, presenter, meta, project} = useApplication();
+  const {renderer, presenter, meta, project, player} = useApplication();
   const rendererState = useRendererState();
+  const scenes = useScenes();
 
   return rendererState === RendererState.Initial ? (
     <ButtonSelect
@@ -59,9 +60,19 @@ function ProcessButton({processId, setProcess}: ProcessButtonProps) {
       onChange={setProcess}
       onClick={() => {
         if (processId === 0) {
+          const allScenes = player.allScenes;
+          const isFiltered =
+            scenes.length > 0 && scenes.length < allScenes.length;
+          const filteredNames = isFiltered
+            ? scenes.map(s => s.name)
+            : undefined;
           renderer.render({
             ...meta.getFullRenderingSettings(),
-            name: project.name,
+            name:
+              filteredNames && filteredNames.length === 1
+                ? filteredNames[0]
+                : project.name,
+            ...(filteredNames && {sceneNames: filteredNames}),
           });
         } else {
           presenter.present({
