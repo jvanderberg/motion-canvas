@@ -23,7 +23,16 @@ export function AudioTrack() {
     pixelsToFrames,
   } = useTimelineContext();
 
-  const audioData = useSubscribableValue(player.audio.onDataChanged);
+  // Waveform data now lives in the AudioResourceManager, keyed by source.
+  // The project's audio source is static, so memoize the subscribable on it.
+  const audioSource = player.audio.getSource();
+  const audioData = useSubscribableValue(
+    useMemo(
+      () =>
+        audioSource ? player.audioResources.get(audioSource).onData : null,
+      [player, audioSource],
+    ),
+  );
   const fullOffset = audioOffset + editingOffset;
 
   useLayoutEffect(() => {

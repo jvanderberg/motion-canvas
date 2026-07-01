@@ -10,6 +10,7 @@ import {
 } from '@motion-canvas/core';
 import {type ComponentChild, render} from 'preact';
 import {ApplicationProvider, PanelsProvider} from './contexts';
+import {PluginShortcutsProvider} from './contexts/pluginShortcuts';
 import {ShortcutsProvider} from './contexts/shortcuts';
 import {Editor} from './Editor';
 import {type ProjectData, ProjectSelection} from './ProjectSelection';
@@ -258,7 +259,9 @@ export function editor(project: Project) {
     >
       <PanelsProvider>
         <ShortcutsProvider>
-          <Editor />
+          <PluginShortcutsProvider>
+            <Editor />
+          </PluginShortcutsProvider>
         </ShortcutsProvider>
       </PanelsProvider>
     </ApplicationProvider>,

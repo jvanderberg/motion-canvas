@@ -8,7 +8,17 @@ node_modules
 /packages/*/output
 
 .idea
+.DS_Store
+Thumbs.db
+*.swp
+*~
 .nx/cache
 .nx/workspace-data
+
+# Your own scenes and CLI render scratch output (git-ignored).
 /projects
+/.artifacts
+/.scene-archive
+/packages/examples/.artifacts
 /packages/examples/src/.generated-project.ts
+/packages/examples/src/.generated-project.meta

@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tspc -p tsconfig.build.json -w",
-    "build": "tspc -p tsconfig.build.json",
+    "build": "tspc -p tsconfig.build.json && node ../../scripts/copy-log-assets.mjs",
     "bundle": "rollup -c rollup.config.mjs",
     "test": "vitest"
   },

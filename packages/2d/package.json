@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "tspc -p src/lib -w",
     "build": "npm run build-lib && npm run build-editor",
-    "build-lib": "tspc -p src/lib/tsconfig.build.json",
+    "build-lib": "tspc -p src/lib/tsconfig.build.json && node ../../scripts/copy-log-assets.mjs src/lib",
     "build-editor": "rollup -c rollup.editor.mjs",
     "bundle": "rollup -c rollup.config.mjs",
     "test": "vitest"

@@ -74,15 +74,10 @@ Motion Canvas follows [semantic versioning][semver].
 After you made a pull request, a GitHub workflow will be dispatched to verify
 it. There are a few checks that can fail:
 
-| Check name        | Description                                                                                                                                                                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Commit name`     | The commit message doesn't follow the [Angular Commit Message Conventions][commit-format]. You can ignore this check since maintainers can modify your commit message before merging, but make sure to follow the conventions in the future. |
-| `Lint`            | ESLint has failed. Run `npm run eslint` locally to list the problems.                                                                                                                                                                        |
-| `Code&nbsp;style` | The code is not correctly formatted. Run `npm run prettier:fix` locally to fix the formatting issues.                                                                                                                                        |
-| `Build`           | The build process failed. Run `npx lerna run build` locally to see the errors.                                                                                                                                                               |
-| `Unit&nbsp;tests` | Unit tests failed. Run `npx lerna run test` locally to see the which tests are failing and fix them.                                                                                                                                         |
-| `E2E`             | End-to-end tests failed to build. Run `npm run e2e:test` locally to see the errors.                                                                                                                                                          |
-| `Documentation`   | The documentation website failed to build. Run `npm run docs:build` locally to see the errors.                                                                                                                                               |
+| Check name                | Description                                                                                                                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Lint, typecheck & tests` | `npm run check` failed. Run it locally: it runs Biome (lint + format), the TypeScript typecheck, and the unit tests. Use `npm run lint:fix` / `npm run format:fix` to auto-fix Biome complaints. |
+| `Build all packages`      | `npm run buildall` failed. Run it locally to see which package didn't compile.                                                                                                                     |
 
 ### Addressing review feedback
 

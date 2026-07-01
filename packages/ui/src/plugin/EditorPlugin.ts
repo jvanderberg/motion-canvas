@@ -1,5 +1,6 @@
 import type {Plugin} from '@motion-canvas/core';
 import type {FunctionComponent} from 'preact';
+import type {ShortcutConfig} from '../contexts/pluginShortcuts';
 
 /**
  * Properties passed to the {@link PluginTabConfig.tabComponent} and
@@ -119,4 +120,12 @@ export interface EditorPlugin extends Plugin {
    * Configuration for custom inspectors displayed on the right.
    */
   inspectors?: PluginInspectorConfig[];
+  /**
+   * Interactive keyboard-shortcut configurations contributed by the plugin.
+   *
+   * @remarks
+   * Created with {@link makeShortcuts} and consumed via {@link useShortcuts} /
+   * {@link useSurfaceShortcuts}.
+   */
+  shortcuts?: ShortcutConfig<string>[];
 }

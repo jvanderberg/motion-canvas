@@ -1,5 +1,5 @@
 import type {Color} from '@motion-canvas/core';
-import {hsv} from 'chroma-js';
+import chroma from 'chroma-js';
 import type {JSX, Ref} from 'preact';
 import {forwardRef} from 'preact/compat';
 import {useEffect, useRef, useState} from 'preact/hooks';
@@ -31,7 +31,8 @@ function ColorPickerInternal(
 
   useEffect(() => {
     onChange(
-      hsv(hue * 360, saturation, value)
+      chroma
+        .hsv(hue * 360, saturation, value)
         .alpha(alpha)
         .hex(),
     );
@@ -42,7 +43,7 @@ function ColorPickerInternal(
       <div
         ref={saturationRef}
         className={styles.saturation}
-        style={{backgroundColor: hsv(hue * 360, 1, 1).hex()}}
+        style={{backgroundColor: chroma.hsv(hue * 360, 1, 1).hex()}}
         onPointerDown={event => {
           if (event.button === MouseButton.Left) {
             event.preventDefault();
@@ -104,7 +105,7 @@ function ColorPickerInternal(
           style={{
             top: 6,
             left: `calc(${hue * 100}% - 6px)`,
-            backgroundColor: hsv(hue * 360, 1, 1).hex(),
+            backgroundColor: chroma.hsv(hue * 360, 1, 1).hex(),
           }}
         />
       </div>

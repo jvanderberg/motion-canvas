@@ -1,6 +1,6 @@
 <br/>
 <p align="center">
-  <a href="https://motion-canvas.github.io">
+  <a href="https://motioncanvas.io">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://motion-canvas.github.io/img/logo_dark.svg">
       <img width="180" alt="Motion Canvas logo" src="https://motion-canvas.github.io/img/logo.svg">
@@ -8,129 +8,123 @@
   </a>
 </p>
 <p align="center">
-  <a href="https://lerna.js.org"><img src="https://img.shields.io/badge/published%20with-lerna-c084fc?style=flat" alt="published with lerna"></a>
   <a href="https://vitejs.dev"><img src="https://img.shields.io/badge/powered%20by-vite-646cff?style=flat" alt="powered by vite"></a>
-  <a href="https://www.npmjs.com/package/@motion-canvas/core"><img src="https://img.shields.io/npm/v/@motion-canvas/core?style=flat" alt="npm package version"></a>
-  <a href="https://chat.motioncanvas.io"><img src="https://img.shields.io/discord/1071029581009657896?style=flat&logo=discord&logoColor=fff&color=404eed" alt="discord"></a>
+  <a href="https://biomejs.dev"><img src="https://img.shields.io/badge/linted%20with-biome-60a5fa?style=flat" alt="linted with biome"></a>
 </p>
 <br/>
 
-# Motion Canvas
+# Motion Canvas — CLI-render fork
 
-Motion Canvas is two things:
+A fork of [Motion Canvas](https://github.com/motion-canvas/motion-canvas) set up
+for **file-based scenes** and **headless rendering**. It keeps the full editor
+but adds a batteries-included workflow: drop `.tsx` scene files in a folder, open
+the editor, and capture frames or render video from the command line.
 
-- A TypeScript library that uses generators to program animations.
-- An editor providing a real-time preview of said animations.
+> Motion Canvas is a TypeScript library for programming animations with
+> generators, plus an editor that gives you a real-time preview. If you're new to
+> it, start with the [official docs](https://motioncanvas.io/docs/).
 
-It's a specialized tool designed to create informative vector animations and
-synchronize them with voice-overs.
+## What this fork adds
 
-Aside from providing the preview, the editor allows you to edit certain aspects
-of the animation which could otherwise be tedious.
+| Feature | Description |
+| ------- | ----------- |
+| **Scene auto-discovery** | Every `.tsx` in `projects/` loads as one project — no manual project wiring. Switch scenes with the editor's dropdown. |
+| **CLI render / capture** | `render.mjs` talks to the running editor over HTTP to grab single frames or trigger a full MP4 / PNG-sequence render, so agents and scripts can inspect output without a browser in the loop. |
+| **`buildall` script** | One command builds every package the dev server needs (`core`, `2d`, `vite-plugin`, `ffmpeg`, `ui`) — all typecheck cleanly. |
+| **Vite 8 + Vitest 4** | Upgraded build toolchain. |
+| **Biome** | Replaces ESLint + Prettier for lint/format. |
+| **Starter scene** | A committed example so a fresh clone shows something immediately. |
 
-## Using Motion Canvas
-
-Check out our [getting started][docs] guide to learn how to use Motion Canvas.
-
-## Developing Motion Canvas locally
-
-The project is maintained as one monorepo containing the following packages:
-
-| Name          | Description                                                    |
-| ------------- | -------------------------------------------------------------- |
-| `2d`          | The default renderer for 2D motion graphics                    |
-| `core`        | All logic related to running and rendering animations.         |
-| `create`      | A package for bootstrapping new projects.                      |
-| `docs`        | [Our documentation website.][docs]                             |
-| `e2e`         | End-to-end tests.                                              |
-| `examples`    | Animation examples used in documentation.                      |
-| `internal`    | Internal helpers used for building the packages.               |
-| `player`      | A custom element for displaying animations in a browser.       |
-| `template`    | A template project included for developer's convenience.       |
-| `ui`          | The user interface used for editing.                           |
-| `vite-plugin` | A plugin for Vite used for developing and bundling animations. |
-
-After cloning the repo, run `npm install` in the root of the project to install
-all necessary dependencies. Then run `npx lerna run build` to build all the
-packages.
-
-### Developing Editor
-
-When developing the editor, run the following command:
+## Quick start
 
 ```bash
-npm run template:dev
+npm install
+npm run buildall        # builds core, 2d, vite-plugin, ffmpeg, ui
+npm run examples:dev    # dev server on http://localhost:9000
 ```
 
-It will start a vite server that watches the `core`, `2d`, `ui`, and
-`vite-plugin` packages. The `template` package itself contains a simple Motion
-Canvas project that can be used during development.
+Open `http://localhost:9000`. **On a fresh clone this Just Works with no setup:**
+you have no scenes of your own yet, so the dev server automatically falls back to
+the bundled **starter scene** (`projects.example/starter.tsx`) and starts playing
+it. There's no project picker and nothing to configure — the editor opens
+straight onto a working animation.
 
-### Developing Player
+### Add your own scenes
 
-To develop the player, first build the template: `npm run template:build`. Then,
-start `npm run player:dev`.
+Create a `projects/` directory at the repo root and drop `.tsx` scene files in
+it (it's git-ignored, so your work stays out of the fork's history):
 
-## Installing a local version of Motion Canvas in a project
-
-It can be useful to install a local version of Motion Canvas in a standalone
-project. For example, when you want to use your own fork with some custom-made
-features to create your animations.
-
-Let's assume the following project structure:
-
-```
-projects/
-├── motion-canvas/ <- your local monorepo
-└── my-project/ <- a bootstrapped project
-    └── package.json
+```bash
+mkdir -p projects
+cp projects.example/starter.tsx projects/my-scene.tsx
 ```
 
-You can link the local packages from the monorepo by updating the `package.json`
-of your project. Simply replace the version with a `file:` followed by a
-relative path to the package you want to link:
+The dev server picks it up on the next start. As soon as `projects/` has at least
+one `.tsx` file, the starter scene steps aside. Each scene may have a matching
+`.meta` file (time events + seed); one is created automatically if absent.
 
-```diff
-  "dependencies": {
--   "@motion-canvas/core": "^3.11.0",
-+   "@motion-canvas/core": "file:../motion-canvas/packages/core",
-    // ...
-  },
+Point the server at any directory with:
+
+```bash
+PROJECTS=/path/to/scenes npm run examples:dev
 ```
 
-If you're linking the `ui` package, you'll also need to modify `vite.config.ts`
-to allow vite to load external files:
+## Rendering & frame capture
 
-```ts
-import {defineConfig} from 'vite';
-import motionCanvas from '@motion-canvas/vite-plugin';
+The editor exposes HTTP endpoints; `render.mjs` drives them. **The editor must be
+open in a browser** — the browser does the actual rendering.
 
-export default defineConfig({
-  server: {
-    fs: {
-      // let it load external files
-      strict: false,
-    },
-  },
-  plugins: [motionCanvas()],
-});
+```bash
+node render.mjs --status                       # { ready, frame, duration }
+node render.mjs --frame 120 -o frame.png       # capture one frame to PNG
+node render.mjs --render mp4                    # full MP4 render
+node render.mjs --render png                    # PNG image sequence
+node render.mjs --logs                          # recent editor errors/warnings
+node render.mjs --help
 ```
 
-This is necessary because the editor styles are loaded using the `/@fs/` prefix
-and since the linked `ui` package is outside the project, vite needs permission
-to access it.
+- Frame number = seconds × fps (default 60fps → frame 120 = 2s in).
+- Rendered output goes to `<projects-dir>/rendered/`.
+- `--port` overrides the default dev-server port (9000).
 
-Then run `npm install` in to apply the changes and that's it.
+After editing a scene, run `node render.mjs --logs` — many runtime errors
+(bad imports, property access) only surface in the browser, never during
+`vite build`.
 
-You can use the same technique to test out any custom package you're working on.
+## Before committing
 
-## Contributing
+```bash
+npm run check           # Biome lint/format + tsc typecheck + unit tests
+```
 
-Read through our [Contribution Guide](./CONTRIBUTING.md) to learn how you can
-help make Motion Canvas better.
+After changing **core** package source, rebuild with `npm run buildall`.
 
-[authenticate]:
-  https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token
-[template]: https://github.com/motion-canvas/project-template#using-the-template
-[discord]: https://chat.motioncanvas.io
-[docs]: https://motioncanvas.io/docs/quickstart
+## Project layout
+
+| Path | What it is |
+| ---- | ---------- |
+| `projects/` | Your scenes (git-ignored). Auto-discovered by the dev server. |
+| `projects.example/` | The committed starter scene — fallback when `projects/` is empty. |
+| `packages/examples/vite.config.ts` | Scans the projects dir and generates a single project module. |
+| `render.mjs` | CLI render/capture client. |
+| `packages/vite-plugin/src/partials/cliRemote.ts` | Editor-side of the CLI remote-control API. |
+| `CLAUDE.md` | Agent instructions + skills for this repo. |
+
+## Color palette
+
+Split-complementary scheme anchored on ACCENT (200°):
+
+| Role | Hex | Hue |
+| ---- | --- | --- |
+| ACCENT | `#38bdf8` | 200° |
+| SUCCESS | `#27b990` | 160° |
+| GOLD | `#e8ad18` | 45° |
+| WARN | `#f07830` | 25° |
+| DANGER | `#e04e4e` | 0° |
+
+## Credits & license
+
+This is a fork of [Motion Canvas](https://github.com/motion-canvas/motion-canvas)
+by [Jacob Jackson (@aarthificial)](https://github.com/aarthificial) and
+contributors. All credit for Motion Canvas itself goes to the upstream project.
+Licensed under the [MIT License](./LICENSE).
